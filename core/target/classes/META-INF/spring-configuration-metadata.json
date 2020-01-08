@@ -1,0 +1,22 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "cn.edu.dgut.school_helper.common.SecurityProperties",
+      "name": "spring.security",
+      "type": "cn.edu.dgut.school_helper.common.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "cn.edu.dgut.school_helper.common.SecurityProperties",
+      "name": "spring.security.browser",
+      "type": "cn.edu.dgut.school_helper.common.BrowserProperites"
+    },
+    {
+      "sourceType": "cn.edu.dgut.school_helper.common.SecurityProperties",
+      "name": "spring.security.login-type",
+      "type": "cn.edu.dgut.school_helper.common.LoginType"
+    }
+  ]
+}
