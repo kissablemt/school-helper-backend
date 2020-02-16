@@ -3,5 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.dgut.school_helper.mapper.ReplyMapper">
+	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.ReplyDTO"
+		id="allReply">
+		<id property="replyId" column="reply_id" />
+		<result property="postId" column="post_id" />
+		<result property="content" column="content" />
+		<result property="parentId" column="parent_id" />
+		<result property="fromOpenId" column="from_open_id" />
+		<result property="toOpenId" column="to_open_id" />
+		<result property="date" column="date" />
+		<result property="status" column="status" />
+		<collection property="replys"
+			select="selectAllReplyByParentId" column="reply_id">
+		</collection>
+	</resultMap>
+	
+	<select id="selectAllReplyByParentId" resultMap="allReply">
+		SELECT * FROM
+		reply r where r.parent_id = #{parentId};
+	</select>
+
+	<select id="selectAllReplyByPostId" resultMap="allReply">
+		SELECT * FROM
+		reply r where r.post_id = #{postId} AND r.parent_id = 0;
+	</select>
+
 
 </mapper>

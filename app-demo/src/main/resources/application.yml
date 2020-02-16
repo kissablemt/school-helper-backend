@@ -11,6 +11,7 @@ spring:
       test-on-borrow: true
       stat-view-servlet:
         allow: true
+ 
   redis:
     database: 0
     host: 192.168.137.134
@@ -33,5 +34,33 @@ spring:
 mybatis:
   mapper-locations:
   - classpath*:mapper/**/*.xml
+pagehelper:
+  helper-dialect: mysql
+  row-bounds-with-count: true
+  reasonable: false
+  support-methods-arguments: true
+  params: count=countSql
 logging:
   config: classpath:logback-spring.xml
+
+#fdfs:
+#  connect-timeout: 600
+#  so-timeout: 1500
+#  web-server-url: http://192.168.106.140:8888/
+#  tracker-list:
+#  - 192.168.106.140:22122  
+#  thumb-image:
+#    height: 150 
+#    width: 150
+#  pool:
+#    #从池中借出的对象的最大数目（配置为-1表示不限制）
+#    max-total: -1
+#    #获取连接时的最大等待毫秒数(默认配置为5秒)
+#    max-wait-millis: 5000
+    #每个key最大连接数
+#    max-total-per-key: 50
+    #每个key对应的连接池最大空闲连接数
+#    max-idle-per-key: 10
+    #每个key对应的连接池最小空闲连接数
+#    max_idle_per_key: 5
+  

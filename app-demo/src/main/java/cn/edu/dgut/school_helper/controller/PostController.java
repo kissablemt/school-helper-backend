@@ -1,5 +1,7 @@
 package cn.edu.dgut.school_helper.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.school_helper.pojo.Post;
 import cn.edu.dgut.school_helper.service.PostService;
@@ -22,13 +25,13 @@ public class PostController {
 	private PostService postService;
 	
 	@PostMapping
-	public CommonResponse addPost(@RequestBody Post post) {
-		return postService.addPost(post);
+	public CommonResponse addPost(@RequestBody Post post,List<MultipartFile> images) {
+		return postService.addPost(post,images);
 	}
 
 	@PutMapping
-	public CommonResponse updatePost(@RequestBody Post post) {
-		return postService.updatePost(post);
+	public CommonResponse updatePost(@RequestBody Post post,List<MultipartFile> images) {
+		return postService.updatePost(post,images);
 	}
 	
 	@DeleteMapping("/{id}")

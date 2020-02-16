@@ -7,7 +7,7 @@ public interface MessageService{
 	
 		public CommonResponse selectMessageByOpenId(Message message);
 		public CommonResponse addMessage(Message message);
-		public CommonResponse updateMessage(Message message);
+		public CommonResponse readMessage(Message message);
 		public CommonResponse deleteMessageById(Message message);
 		//public CommonResponse selectAllMessage();
 }

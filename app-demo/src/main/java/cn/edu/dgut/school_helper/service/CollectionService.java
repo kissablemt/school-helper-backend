@@ -7,7 +7,6 @@ public interface CollectionService{
 	
 		
 		public CommonResponse addCollection(Collection collection);
-		public CommonResponse updateCollection(Collection collection);
 		public CommonResponse deleteCollectionById(Collection collection);
 		public CommonResponse selectCollectionByOpenId(Collection collection);
 		//public CommonResponse selectAllCollection();

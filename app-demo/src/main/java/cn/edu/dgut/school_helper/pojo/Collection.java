@@ -20,6 +20,9 @@ public class Collection implements Serializable {
      */
     @Column(name = "`open_id`")
     private String openId;
+    
+    @Column(name = "`status`")
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -75,4 +78,13 @@ public class Collection implements Serializable {
         this.openId = openId;
 		return this;
     }
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public Collection setStatus(Integer status) {
+		this.status = status;
+		return this;
+	}
 }

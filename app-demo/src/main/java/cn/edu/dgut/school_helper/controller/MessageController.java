@@ -25,10 +25,10 @@ public class MessageController {
 	public CommonResponse addMessage(@RequestBody Message message) {
 		return messageService.addMessage(message);
 	}
-
-	@PutMapping
-	public CommonResponse updateMessage(@RequestBody Message message) {
-		return messageService.updateMessage(message);
+	
+	@PutMapping("/read/{id}")
+	public CommonResponse readMessage(@PathVariable Integer messageId) {
+		return messageService.readMessage(new Message().setMessageId(messageId));
 	}
 	
 	@DeleteMapping("/{id}")

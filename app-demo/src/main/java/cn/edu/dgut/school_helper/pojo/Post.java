@@ -2,11 +2,15 @@ package cn.edu.dgut.school_helper.pojo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import javax.annotation.Generated;
 import javax.persistence.*;
 
 @Table(name = "`post`")
 public class Post implements Serializable {
+	
     @Id
+    @GeneratedValue(generator = "JDBC")
     @Column(name = "`post_id`")
     private Integer postId;
 
