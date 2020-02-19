@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.edu.dgut.school_helper.constanst.MessageConstant;
+import cn.edu.dgut.school_helper.constant.MessageConstant;
 import cn.edu.dgut.school_helper.mapper.MessageMapper;
 import cn.edu.dgut.school_helper.mapper.UserMapper;
 import cn.edu.dgut.school_helper.pojo.Message;

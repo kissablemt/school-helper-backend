@@ -2,6 +2,7 @@ package cn.edu.dgut.school_helper.pojo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.annotation.Generated;
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class Post implements Serializable {
     @Column(name = "`money`")
     private BigDecimal money;
 
+    @Column(name="`date`")
+    private Date date;
+    
+    
     @Column(name = "`goods_type`")
     private Integer goodsType;
 
@@ -173,7 +178,15 @@ public class Post implements Serializable {
         return this;
     }
 
-    /**
+    public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
      * 获取1-发布中，2-被封禁,3-被删除
      *
      * @return status - 1-发布中，2-被封禁,3-被删除

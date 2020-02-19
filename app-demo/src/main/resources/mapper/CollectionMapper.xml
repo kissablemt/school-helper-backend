@@ -2,8 +2,27 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.dgut.school_helper.mapper.CollectionMapper">
-	<select id="">
+<mapper
+	namespace="cn.edu.dgut.school_helper.mapper.CollectionMapper">
 	
+	<resultMap
+		type="cn.edu.dgut.school_helper.pojo.dto.CollectionDTO"
+		id="collectionMapping">
+		<id property="collectionId" column="collection_id" />
+		<result property="postId" column="post_id" />
+		<result property="headline" column="headline" />
+		<result property="imageUrl" column="image_url" />
+		<result property="date" column="date" />
+		<result property="openId" column="open_id" />
+		<result property="status" column="status" />
+	</resultMap>
+	<select id="selectAllCollectionByOpenId"
+		resultMap="collectionMapping">
+		SELECT c.*,p.headline,i.image_url,p.date from collection c
+		LEFT JOIN post p
+		on c.post_id = p.post_id
+		LEFT JOIN image i
+		on p.post_id = i.post_id
+		where c.open_id = #{openId} AND c.status = 1 AND i.order = 1;
 	</select>
 </mapper>

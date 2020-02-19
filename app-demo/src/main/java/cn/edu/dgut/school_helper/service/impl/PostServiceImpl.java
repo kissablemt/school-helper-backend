@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import cn.edu.dgut.school_helper.constanst.PostConstant;
+import cn.edu.dgut.school_helper.constant.PostConstant;
 import cn.edu.dgut.school_helper.mapper.ImageMapper;
 import cn.edu.dgut.school_helper.mapper.PostMapper;
 import cn.edu.dgut.school_helper.pojo.Image;

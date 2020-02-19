@@ -3,7 +3,7 @@ package cn.edu.dgut.school_helper.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.edu.dgut.school_helper.constanst.ReportConstant;
+import cn.edu.dgut.school_helper.constant.ReportConstant;
 import cn.edu.dgut.school_helper.mapper.PostMapper;
 import cn.edu.dgut.school_helper.mapper.ReportMapper;
 import cn.edu.dgut.school_helper.mapper.UserMapper;

@@ -1,4 +1,4 @@
-package cn.edu.dgut.school_helper.constanst;
+package cn.edu.dgut.school_helper.constant;
 
 public class PostConstant {
 	/**

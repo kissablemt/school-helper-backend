@@ -3,30 +3,49 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.dgut.school_helper.mapper.ReplyMapper">
+
+
 	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.ReplyDTO"
-		id="allReply">
+		id="baseReply">
 		<id property="replyId" column="reply_id" />
 		<result property="postId" column="post_id" />
 		<result property="content" column="content" />
 		<result property="parentId" column="parent_id" />
 		<result property="fromOpenId" column="from_open_id" />
 		<result property="toOpenId" column="to_open_id" />
+		<result property="toOpenName" column="to_open_name" />
+		<result property="fromOpenName" column="from_open_name" />
 		<result property="date" column="date" />
 		<result property="status" column="status" />
+	</resultMap>
+
+	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.ReplyDTO"
+		id="allReply" extends="baseReply">
 		<collection property="replys"
-			select="selectAllReplyByParentId" column="reply_id">
+			select="selectAllReplyByParentId"
+			column="{parentId=reply_id,postId=post_id}">
 		</collection>
 	</resultMap>
 	
-	<select id="selectAllReplyByParentId" resultMap="allReply">
-		SELECT * FROM
-		reply r where r.parent_id = #{parentId};
+	<select id="selectAllReplyByParentId" resultMap="baseReply"
+		parameterType="java.util.Map">
+		<include refid="baseQuerySql"></include>
+		AND r.parent_id = #{parentId} ORDER BY date DESC;
 	</select>
-
 	<select id="selectAllReplyByPostId" resultMap="allReply">
-		SELECT * FROM
-		reply r where r.post_id = #{postId} AND r.parent_id = 0;
+		<include refid="baseQuerySql"></include>
+		AND r.parent_id = -1 ORDER BY date DESC
 	</select>
-
-
+	
+	<sql id="baseQuerySql">
+		SELECT r.*,u1.nickname 'from_open_name' ,u2.nickname
+		'to_open_name' FROM reply r
+		LEFT JOIN user u1
+		on r.from_open_id =
+		u1.open_id
+		LEFT JOIN user u2
+		on r.to_open_id = u2.open_id
+		WHERE r.post_id
+		= #{postId}
+	</sql>
 </mapper>

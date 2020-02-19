@@ -1,4 +1,4 @@
-package cn.edu.dgut.school_helper.constanst;
+package cn.edu.dgut.school_helper.constant;
 
 public class CollectionConstant {
 	/**
@@ -8,6 +8,6 @@ public class CollectionConstant {
 	/**
 	 * 已删除
 	 */
-	public static final Integer DELETED = 1;
+	public static final Integer DELETED = 2;
 
 }

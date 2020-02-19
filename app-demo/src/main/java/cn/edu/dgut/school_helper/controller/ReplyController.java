@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.github.pagehelper.PageHelper;
 
 import cn.edu.dgut.school_helper.pojo.Reply;
 import cn.edu.dgut.school_helper.service.ReplyService;
@@ -18,10 +17,10 @@ import cn.edu.dgut.school_helper.util.CommonResponse;
 @RestController
 @RequestMapping("/api/reply")
 public class ReplyController {
-	
+
 	@Autowired
 	private ReplyService replyService;
-	
+
 	@PostMapping
 	public CommonResponse addReply(@RequestBody Reply reply) {
 		return replyService.addReply(reply);
@@ -31,10 +30,10 @@ public class ReplyController {
 	public CommonResponse deleteReplyById(@PathVariable(name = "id") Integer replyId) {
 		return replyService.deleteReplyById(new Reply().setReplyId(replyId));
 	}
-	
-	
+
 	@GetMapping("/selectAll/{postId}")
-	public CommonResponse selectAllReply(@PathVariable("postId") Integer postId) {
-		return replyService.selectReplyByPostId(new Reply().setPostId(postId));
+	public CommonResponse selectReplyList(@PathVariable("postId") Integer postId, @RequestParam Integer pageNum,
+			@RequestParam Integer pageSize) {
+		return replyService.selectReplyByPostId(postId, pageNum, pageSize);
 	}
 }

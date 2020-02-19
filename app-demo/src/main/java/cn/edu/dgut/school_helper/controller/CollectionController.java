@@ -32,8 +32,8 @@ public class CollectionController {
 	}
 	
 	
-	@GetMapping("/selectAll")
-	public CommonResponse selectAllCollection() {
-		return collectionService.selectCollectionByOpenId(new Collection().setOpenId("ss"));
+	@GetMapping("/selectAll/{openId}")
+	public CommonResponse selectAllCollection(@PathVariable(name="openId") String openId) {
+		return collectionService.selectCollectionByOpenId(new Collection().setOpenId(openId));
 	}
 }
