@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageHelper;
+
 import cn.edu.dgut.school_helper.constant.PostConstant;
 import cn.edu.dgut.school_helper.mapper.ImageMapper;
 import cn.edu.dgut.school_helper.mapper.PostMapper;
 import cn.edu.dgut.school_helper.pojo.Image;
 import cn.edu.dgut.school_helper.pojo.Post;
+import cn.edu.dgut.school_helper.pojo.dto.PostDTO;
+import cn.edu.dgut.school_helper.pojo.dto.PostQueryDTO;
 import cn.edu.dgut.school_helper.service.PostService;
 import cn.edu.dgut.school_helper.util.CommonResponse;
 import cn.edu.dgut.school_helper.util.FastDFSClientWrapper;
@@ -74,13 +78,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public CommonResponse selectPostByOpenId(Post post) {
-		return CommonResponse.isOk(postMapper.selectAll());
+	public CommonResponse selectAllPostByOpenId(Post post) {
+		return CommonResponse.isOk(postMapper.selectAllPostByOpenId(post.getOpenId()));
 	}
 
 	@Override
-	public CommonResponse selectAllPost() {
-		return null;
+	public CommonResponse selectPostListPaging(PostQueryDTO postQueryDTO) {
+		PageHelper.startPage(postQueryDTO.getPageNum(),postQueryDTO.getPageSize());
+		List<PostDTO> posts = postMapper.selectPostListPaging(postQueryDTO.getPostType(), postQueryDTO.getGoodsType());
+		return CommonResponse.isOk(posts);
 	}
 
 	private void uploadImages(Integer postId,List<MultipartFile> images) {
@@ -107,10 +113,11 @@ public class PostServiceImpl implements PostService {
 		}
 	}
 	
-	
 	private String getExtention(MultipartFile image) {
 		String originalFileName = image.getOriginalFilename();
 		String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 		return extension;
 	}
+
+	
 }

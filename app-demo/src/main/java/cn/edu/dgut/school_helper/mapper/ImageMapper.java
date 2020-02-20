@@ -1,5 +1,7 @@
 package cn.edu.dgut.school_helper.mapper;
 
+import java.util.List;
+
 import cn.edu.dgut.school_helper.pojo.Image;
 
 /**
@@ -8,7 +10,7 @@ import cn.edu.dgut.school_helper.pojo.Image;
 * @author mapper-generator
 */
 public interface ImageMapper extends tk.mybatis.mapper.common.Mapper<Image> {
-
+	List<Image> selectAllImageByPostId(Integer postId);
 }
 
 

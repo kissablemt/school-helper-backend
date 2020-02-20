@@ -3,6 +3,8 @@ package cn.edu.dgut.school_helper.pojo.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import cn.edu.dgut.school_helper.pojo.Reply;
 
 public class ReplyDTO {
@@ -15,6 +17,7 @@ public class ReplyDTO {
 	private String toOpenId;
 	private String fromOpenName;
 	private String toOpenName;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date date;
 	private Integer status;
 	List<ReplyDTO> replys;

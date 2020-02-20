@@ -19,9 +19,6 @@ public class CollectionDTO implements Serializable{
 	private String openId;
 	private Integer status;
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	public Integer getCollectionId() {

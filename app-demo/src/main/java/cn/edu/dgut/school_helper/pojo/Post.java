@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 @Table(name = "`post`")
@@ -204,4 +203,11 @@ public class Post implements Serializable {
         this.status = status;
 		return this;
     }
+
+	@Override
+	public String toString() {
+		return "Post [postId=" + postId + ", openId=" + openId + ", headline=" + headline + ", content=" + content
+				+ ", money=" + money + ", date=" + date + ", goodsType=" + goodsType + ", postType=" + postType
+				+ ", status=" + status + "]";
+	}
 }

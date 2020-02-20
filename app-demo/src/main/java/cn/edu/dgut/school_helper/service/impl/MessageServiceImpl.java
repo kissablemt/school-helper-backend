@@ -58,6 +58,6 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public CommonResponse selectMessageByOpenId(Message message) {
-		return CommonResponse.isOk(messageMapper.selectAll());
+		return CommonResponse.isOk(messageMapper.selectAllMessageByOpenId(message.getOpenId()));
 	}
 }

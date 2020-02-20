@@ -3,5 +3,44 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.dgut.school_helper.mapper.PostMapper">
+	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.PostDTO"
+		id="postMapping">
+		<id property="postId" column="post_id" />
+		<result property="openId" column="open_id" />
+		<result property="nickname" column="nickname" />
+		<result property="headPortraitUrl" column="head_portrait_url" />
+		<result property="contactWay" column="contact_way" />
+		<result property="headline" column="headline" />
+		<result property="content" column="content" />
+		<result property="money" column="money" />
+		<result property="date" column="date" />
+		<result property="postType" column="post_type" />
+		<result property="goodsType" column="goods_type" />
+		<result property="status" column="status" />
+		<collection property="images"
+			ofType="cn.edu.dgut.school_helper.pojo.Image"
+			select="cn.edu.dgut.school_helper.mapper.ImageMapper.selectAllImageByPostId"
+			column="{postId=post_id}">
+		</collection>
+	</resultMap>
 
+	<select id="selectAllPostByOpenId" resultMap="postMapping">
+		SELECT
+		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
+		LEFT JOIN user u
+		on p.open_id = u.open_id
+		WHERE p.open_id = #{openId};
+	</select>
+
+	<select id="selectPostListPaging" resultMap="postMapping">
+		SELECT
+		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
+		LEFT JOIN
+		user u
+		on p.open_id = u.open_id
+		where p.post_type = #{postType}
+		<if test="postType == 1 or postType == 2">
+			and p.goods_type = #{goodsType}
+		</if>
+	</select>
 </mapper>

@@ -26,19 +26,19 @@ public class MessageController {
 		return messageService.addMessage(message);
 	}
 	
-	@PutMapping("/read/{id}")
-	public CommonResponse readMessage(@PathVariable Integer messageId) {
+	@PutMapping("/read/{messageId}")
+	public CommonResponse readMessage(@PathVariable(name="messageId") Integer messageId) {
 		return messageService.readMessage(new Message().setMessageId(messageId));
 	}
 	
-	@DeleteMapping("/{id}")
-	public CommonResponse deleteMessageById(@PathVariable(name = "id") Integer messageId) {
+	@DeleteMapping("/{messageId}")
+	public CommonResponse deleteMessageById(@PathVariable(name = "messageId") Integer messageId) {
 		return messageService.deleteMessageById(new Message().setMessageId(messageId));
 	}
 	
 	
-	@GetMapping("/selectAll")
-	public CommonResponse selectAllMessage() {
-		return messageService.selectMessageByOpenId(new Message().setOpenId("ss"));
+	@GetMapping("/selectAll/{openId}")
+	public CommonResponse selectAllMessage(@PathVariable(name="openId") String openId) {
+		return messageService.selectMessageByOpenId(new Message().setOpenId(openId));
 	}
 }
