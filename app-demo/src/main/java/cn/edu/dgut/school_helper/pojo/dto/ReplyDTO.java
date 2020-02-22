@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import cn.edu.dgut.school_helper.pojo.Reply;
 
 public class ReplyDTO {
 

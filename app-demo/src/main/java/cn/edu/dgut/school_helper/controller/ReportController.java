@@ -1,7 +1,6 @@
 package cn.edu.dgut.school_helper.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,14 +30,8 @@ public class ReportController {
 		return reportService.updateReport(report);
 	}
 	
-	@DeleteMapping("/{id}")
-	public CommonResponse deleteReportById(@PathVariable(name = "id") Integer reportId) {
-		return reportService.deleteReportById(new Report().setReportId(reportId));
-	}
-	
-	
-	@GetMapping("/selectAll")
-	public CommonResponse selectAllReport() {
-		return reportService.selectReportByOpenId(null);
+	@GetMapping("/selectAll/{openId}")
+	public CommonResponse selectAllReport(@PathVariable(name="openId") String openId) {
+		return reportService.selectReportByOpenId(new Report().setReporterId(openId));
 	}
 }

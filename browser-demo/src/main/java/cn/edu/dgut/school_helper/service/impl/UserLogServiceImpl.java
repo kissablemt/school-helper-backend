@@ -25,4 +25,27 @@ public class UserLogServiceImpl implements UserLogService {
 		return CommonResponse.error("插入失败");
 	}
 
+	@Override
+	public CommonResponse updateUserLog(UserLog userLog) {
+		int row = userLogMapper.updateByPrimaryKeySelective(userLog);
+		if(row == 1) {
+			return CommonResponse.isOk(row);
+		}
+		return CommonResponse.error("更新失败");
+	}
+
+	@Override
+	public CommonResponse deleteUserLogById(UserLog userLog) {
+		int row = userLogMapper.deleteByPrimaryKey(userLog);
+		if(row == 1) {
+			return CommonResponse.isOk(row);
+		}
+		return CommonResponse.error("删除失败");
+	}
+
+	@Override
+	public CommonResponse selectUserLogByOpenId(UserLog userLog) {
+		return null;
+	}
+
 }

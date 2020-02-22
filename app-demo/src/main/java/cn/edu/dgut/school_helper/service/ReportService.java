@@ -8,7 +8,7 @@ public interface ReportService{
 		public CommonResponse selectReportByOpenId(Report report);
 		public CommonResponse addReport(Report report);
 		public CommonResponse updateReport(Report report);
-		public CommonResponse deleteReportById(Report report);
+//		public CommonResponse deleteReportById(Report report);
 		//public CommonResponse selectAllReport();
 }
 

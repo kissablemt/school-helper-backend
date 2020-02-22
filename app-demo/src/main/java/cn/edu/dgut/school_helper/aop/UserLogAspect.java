@@ -22,8 +22,8 @@ import cn.edu.dgut.school_helper.pojo.User;
 import cn.edu.dgut.school_helper.pojo.UserLog;
 import cn.edu.dgut.school_helper.service.UserLogService;
 
-@Component
-@Aspect
+//@Component
+//@Aspect
 public class UserLogAspect {
 
 	@Autowired
@@ -62,7 +62,7 @@ public class UserLogAspect {
 		userLog.setDate(new Date());
 
 		log.info(ReflectionToStringBuilder.toString(userLog, ToStringStyle.MULTI_LINE_STYLE));
-		//		userLogService.addUserLog(userLog);
+		userLogService.addUserLog(userLog);
 	}
 
 	private Integer getOptionType(String methodName) {

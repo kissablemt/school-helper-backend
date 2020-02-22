@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import cn.edu.dgut.school_helper.constant.ReportConstant;
 import cn.edu.dgut.school_helper.mapper.PostMapper;
 import cn.edu.dgut.school_helper.mapper.ReportMapper;
-import cn.edu.dgut.school_helper.mapper.UserMapper;
 import cn.edu.dgut.school_helper.pojo.Post;
 import cn.edu.dgut.school_helper.pojo.Report;
-import cn.edu.dgut.school_helper.pojo.User;
 import cn.edu.dgut.school_helper.service.ReportService;
 import cn.edu.dgut.school_helper.util.CommonResponse;
 
@@ -18,9 +16,6 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private ReportMapper reportMapper;
-
-	@Autowired
-	private UserMapper userMapper;
 
 	@Autowired
 	private PostMapper postMapper;
@@ -44,7 +39,7 @@ public class ReportServiceImpl implements ReportService {
 	public CommonResponse updateReport(Report report) {
 		// 处理完毕的帖子不允许修改
 		Report report2 = reportMapper.selectByPrimaryKey(report.getReportId());
-		if (report2.getStatus() == ReportConstant.DONE) {
+		if (report2.getStatus() != ReportConstant.UNDO) {
 			return CommonResponse.error("该举报已经处理完毕，不允许修改");
 		}
 		// 只允许更新举报内容
@@ -56,17 +51,9 @@ public class ReportServiceImpl implements ReportService {
 		return CommonResponse.error("更新失败");
 	}
 
-	@Override
-	public CommonResponse deleteReportById(Report report) {
-		int row = reportMapper.updateByPrimaryKeySelective(report.setStatus(ReportConstant.DELETED));
-		if (row == 1) {
-			return CommonResponse.isOk(row);
-		}
-		return CommonResponse.error("删除失败");
-	}
 
 	@Override
 	public CommonResponse selectReportByOpenId(Report report) {
-		return CommonResponse.isOk(reportMapper.selectAll());
+		return CommonResponse.isOk(reportMapper.selectAllReportByOpenId(report.getReporterId()));
 	}
 }

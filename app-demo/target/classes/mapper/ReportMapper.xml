@@ -4,4 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.dgut.school_helper.mapper.ReportMapper">
 
+	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.ReportDTO" id="reportMapping">
+		<id property="reportId" column="report_id"/>
+		<result property="postId" column="post_id"/>
+		<result property="headline" column="headline"/>
+		<result property="remark" column="remark"/>
+		<result property="reporterId" column="reporter_id"/>
+		<result property="status" column="status"/>
+	</resultMap>
+
+	<select id="selectAllReportByOpenId" resultMap="reportMapping">
+		SELECT r.*,p.headline FROM report r
+		LEFT JOIN post p
+		on r.post_id = p.post_id
+		where r.reporter_id = #{openId} AND r.status != 3;
+	</select>
 </mapper>
