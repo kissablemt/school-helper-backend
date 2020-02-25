@@ -63,4 +63,11 @@ logging:
 #    max-idle-per-key: 10
     #每个key对应的连接池最小空闲连接数
 #    max_idle_per_key: 5
-  
+wx:
+  miniapp:
+    configs:
+        - appid: wx5a9d74cc2a8cca3f
+          secret: b52a9c36333fa796001b34cb94ff4b8f
+          token: #微信小程序消息服务器配置的token
+          aesKey: #微信小程序消息服务器配置的EncodingAESKey
+          msgDataFormat: JSON

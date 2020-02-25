@@ -166,12 +166,28 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/bouncycastle/bcpkix-jdk15on/1.59/bcpkix-jdk15on-1.59.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="EXTJAR" id="D:\tomcat\apache-tomcat-9.0.10\lib\servlet-api.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/github/binarywang/weixin-java-miniapp/3.6.0/weixin-java-miniapp-3.6.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/github/binarywang/weixin-java-common/3.6.0/weixin-java-common-3.6.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/bouncycastle/bcprov-jdk15on/1.59/bcprov-jdk15on-1.59.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/projectlombok/lombok/1.16.22/lombok-1.16.22.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/github/tobato/fastdfs-client/1.26.7/fastdfs-client-1.26.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/commons/commons-pool2/2.5.0/commons-pool2-2.5.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/hibernate/hibernate-validator/5.4.3.Final/hibernate-validator-5.4.3.Final.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/net/coobird/thumbnailator/0.4.8/thumbnailator-0.4.8.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.jupiter.api_5.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.jupiter.engine_5.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.jupiter.migrationsupport_5.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.jupiter.params_5.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.platform.commons_1.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.platform.engine_1.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.platform.launcher_1.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.platform.runner_1.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.platform.suite.api_1.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.junit.vintage.engine_5.1.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.opentest4j_1.0.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.apiguardian_1.0.0.v20180327-1502.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="JUNIT_HOME/junit.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="ECLIPSE_HOME/plugins/org.hamcrest.core_1.3.0.v20180420-1519.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="PLUGIN" id="net.harawata.mybatipse" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="PLUGIN" id="org.eclipse.jst.ws.annotations.core" enabled="true" runInBatchMode="false"/>
 </factorypath>
