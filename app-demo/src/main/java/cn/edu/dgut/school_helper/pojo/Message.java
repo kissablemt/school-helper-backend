@@ -2,7 +2,10 @@ package cn.edu.dgut.school_helper.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`message`")
 public class Message implements Serializable {

@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import lombok.Data;
-
 /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
  */

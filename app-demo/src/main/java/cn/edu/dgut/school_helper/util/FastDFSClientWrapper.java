@@ -1,19 +1,16 @@
 package cn.edu.dgut.school_helper.util;
 
-import com.github.tobato.fastdfs.domain.fdfs.StorePath;
-import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
-import com.github.tobato.fastdfs.service.AppendFileStorageClient;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.github.tobato.fastdfs.service.GenerateStorageClient;
-import com.github.tobato.fastdfs.service.TrackerClient;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
+import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 
 /**
  * FastDFS客户端包装类

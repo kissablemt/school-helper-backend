@@ -16,6 +16,7 @@ import cn.edu.dgut.school_helper.config.WxMaConfiguration;
 import cn.edu.dgut.school_helper.pojo.User;
 import cn.edu.dgut.school_helper.service.UserService;
 import cn.edu.dgut.school_helper.util.CommonResponse;
+import cn.edu.dgut.school_helper.util.JwtUtils;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 @RestController
@@ -24,7 +25,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 	/**
@@ -41,14 +42,12 @@ public class UserController {
 		try {
 			WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
 			String sessionKey = session.getSessionKey();
-			String openId = session.getOpenid();
 			if (!wxService.getUserService().checkUserInfo(sessionKey, rawData, signature)) {
 				return CommonResponse.error("user check failed");
 			}
 			// 解密用户信息
 			WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
 			log.info(userInfo.toString());
-
 			return CommonResponse.isOk(loginAndGetJwt(userInfo));
 		} catch (WxErrorException e) {
 			log.error(e.getMessage(), e);
@@ -70,7 +69,6 @@ public class UserController {
 				return "error";
 			}
 		}
-		String jwt = userService.loginUser(user);
-		return jwt;
+		return JwtUtils.createAccessToken(user.getOpenId());
 	}
 }

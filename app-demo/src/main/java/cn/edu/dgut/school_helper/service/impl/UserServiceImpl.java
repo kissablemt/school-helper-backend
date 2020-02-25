@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import cn.edu.dgut.school_helper.mapper.SchoolMapper;
 import cn.edu.dgut.school_helper.mapper.UserMapper;
 import cn.edu.dgut.school_helper.pojo.User;
-import cn.edu.dgut.school_helper.service.SchoolService;
 import cn.edu.dgut.school_helper.service.UserService;
-import cn.edu.dgut.school_helper.util.CommonResponse;
 
 
 @Service
@@ -18,17 +16,6 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	@Autowired
 	private SchoolMapper schoolMapper;
-
-	@Override
-	public String loginUser(User user) {
-		User user2 = userMapper.selectByPrimaryKey(user);
-		if(user2 == null) {
-			return "error,system haven't this user";
-		}
-		//jwt构造
-		String jwt = "xxx";
-		return jwt;
-	}
 
 	@Override
 	public Boolean registUser(User user) {

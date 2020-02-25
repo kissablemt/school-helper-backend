@@ -1,7 +1,10 @@
 package cn.edu.dgut.school_helper.pojo;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`collection`")
 public class Collection implements Serializable {
