@@ -3,6 +3,7 @@ package cn.edu.dgut.school_helper.util;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,9 +54,9 @@ public class JwtUtils {
 	/**
 	 * 根据openid,返回accessToken
 	 */
-	public static String createAccessToken(String str) {
+	public static String createAccessToken(String openId) {
 		String accessToken = JWT.create()
-				.withSubject(str)
+				.withSubject(openId)
 				.withIssuedAt(new Date(System.currentTimeMillis()))
 				.withExpiresAt(new Date(System.currentTimeMillis() + JWT_TTL))
 				.sign(algorithm);
@@ -65,10 +66,12 @@ public class JwtUtils {
 	/**
 	 * 根据openid,返回refreshToken
 	 */
-	public static String createRefreshToken(String str) {
-
+	public static String createRefreshToken(String openId, RedisTemplate<String, String> redisTemplate) {
+		String refreshUuid = UUID.randomUUID().toString();
+		redisTemplate.opsForValue().set(JWT_REFRESH_TABLE + openId, refreshUuid,JWT_REFRESH_TOKEN_TTL);
 		String refreshToken = JWT.create()
-				.withSubject(str)
+				.withSubject(openId)
+				.withClaim(JWT_REFRESH_TABLE + openId, refreshUuid)
 				.withIssuedAt(new Date(System.currentTimeMillis()))
 				.withExpiresAt(new Date(System.currentTimeMillis() + JWT_REFRESH_TOKEN_TTL)).withIssuedAt(new Date())
 				.sign(algorithm);
@@ -83,7 +86,13 @@ public class JwtUtils {
 		JWTVerifier verify = JWT.require(algorithm)
 				.acceptExpiresAt(Calendar.getInstance().getTimeInMillis())
 				.build();
-		DecodedJWT decodeJwt = verify.verify(jwt);
+		DecodedJWT decodeJwt = null;
+		try {
+			decodeJwt = verify.verify(jwt);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return null;
+		}
 		String openId = decodeJwt.getSubject();
 		return openId;
 	}
@@ -94,10 +103,10 @@ public class JwtUtils {
 
 		DecodedJWT decodedJWT = JWT.decode(jwt);
 		String openId = decodedJWT.getSubject();
-		String token = redisTemplate.opsForValue().get(JWT_REFRESH_TABLE + openId);
+		String refreshUuid = redisTemplate.opsForValue().get(JWT_REFRESH_TABLE + openId);
 		// 判断是否过期,以及是否为refreshToken
 		JWTVerifier verify = JWT.require(algorithm)
-				.withClaim(JWT_REFRESH_TABLE + openId, token)
+				.withClaim(JWT_REFRESH_TABLE + openId, refreshUuid)
 				.acceptExpiresAt(Calendar.getInstance().getTimeInMillis())
 				.build();
 		try {
