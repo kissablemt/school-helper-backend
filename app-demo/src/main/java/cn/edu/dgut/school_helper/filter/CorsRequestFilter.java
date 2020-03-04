@@ -8,9 +8,17 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.web.filter.OncePerRequestFilter;
-@WebFilter("/*")
-public class OptionsRequestFilter extends OncePerRequestFilter{
+
+/**
+ * 使用@ServletComponentScan,扫描注解，无法自定义过滤顺序，只能根据类的开头a-z，顺序过滤
+ * cors需要第一个过滤，记录一下
+ * @author 星星星
+ *
+ */
+@WebFilter(urlPatterns = {"/*"})
+public class CorsRequestFilter extends OncePerRequestFilter{
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

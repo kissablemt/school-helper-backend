@@ -66,17 +66,22 @@ public class UserController {
 		return CommonResponse.isOk(accessToken);
 	}
 	
+	@GetMapping("/getUserInfo")
+	public CommonResponse getUserInfo(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+		return CommonResponse.isOk(userService.getUserInfo(new User().setOpenId(openId)));
+		
+	}
+	
 	private CommonResponse loginAndGetJwt(WxMaUserInfo userInfo) {
 		// TODO 如果是新用户把用户信息存入数据库。登录返回jwt字符串
 		User user = new User().setOpenId(userInfo.getOpenId())
 				.setNickname(userInfo.getNickName())
 				.setHeadPortraitUrl(userInfo.getAvatarUrl())
 				.setFaithValue(100)
-				.setContactWay("无")
 				.setSchoolId(1);
 		// 不存在用户
 		if (!userService.checkUserExistByOpenId(new User().setOpenId(userInfo.getOpenId()))) {
-			if (!userService.registUser(user)) {
+			if (!userService.addUser(user)) {
 				return CommonResponse.error("error");
 			}
 		}

@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	private SchoolMapper schoolMapper;
 
 	@Override
-	public Boolean registUser(User user) {
+	public Boolean addUser(User user) {
 		//查看是否有该学校
 		if(schoolMapper.selectByPrimaryKey(user.getSchoolId()) == null){
 			return false;
@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService {
 		}
 		return true;
 	}
+	
+	@Override
+	public User getUserInfo(User user) {
+		return userMapper.selectByPrimaryKey(user.getOpenId());
+	}
 
 	@Override
 	public Boolean checkUserExistByOpenId(User user) {
@@ -39,6 +44,8 @@ public class UserServiceImpl implements UserService {
 		}
 		return true;
 	}
+
+
 
 	
 }

@@ -59,7 +59,7 @@ public class PostController {
 	}
 
 	@GetMapping("/selectList")
-	public CommonResponse selectAllPost(@ModelAttribute PostQueryDTO postQueryDTO) {
+	public CommonResponse selectAllPostList(@ModelAttribute PostQueryDTO postQueryDTO) {
 		log.info(ReflectionToStringBuilder.toString(postQueryDTO, ToStringStyle.MULTI_LINE_STYLE));
 		System.out.println(postQueryDTO.toString());
 		return postService.selectPostListPaging(postQueryDTO);

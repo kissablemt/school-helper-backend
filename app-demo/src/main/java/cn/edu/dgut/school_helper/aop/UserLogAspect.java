@@ -9,18 +9,21 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
 import cn.edu.dgut.school_helper.pojo.UserLog;
 import cn.edu.dgut.school_helper.service.UserLogService;
 
-//@Component
-//@Aspect
+@Component
+@Aspect
 public class UserLogAspect {
 
 	@Autowired
@@ -29,7 +32,7 @@ public class UserLogAspect {
 	private static final Logger log = LoggerFactory.getLogger(UserLogAspect.class);
 
 	// .. 当前包及子包路径
-	@Pointcut("execution(* cn.edu.dgut.school_helper..service.impl..*.*(..))")
+	@Pointcut("execution(* cn.edu.dgut.school_helper..service.impl..*.*(..)) && !execution(* cn.edu.dgut.school_helper..service.impl.UserLogServiceImpl.*(..))")
 	public void pointcut() {
 	}
 
@@ -37,20 +40,15 @@ public class UserLogAspect {
 	public void afterReturning(JoinPoint joinPoint, Object result) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		/*User user = (User) request.getAttribute("user");
-		if (user == null) {
-			log.info("没有该用户身份信息,无法记录日志");
-			return;
-
-		}*/
 		
 		Object[] args = joinPoint.getArgs();
 		String methodName = joinPoint.getSignature().getName();
 
-		String openId = "openId" /*user.getOpenId();*/;
+		String openId = (String) request.getAttribute(JwtRequestConstant.OPEN_ID);
 		Integer opType = getOptionType(methodName);
 		String opContent = optionContent(args, methodName);
-
+		
+		log.info(opContent);
 		// 记录日志
 		UserLog userLog = new UserLog();
 		userLog.setOpenId(openId);

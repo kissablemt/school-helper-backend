@@ -42,6 +42,9 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public CommonResponse readMessage(Message message) {
 		Message message2 = messageMapper.selectByPrimaryKey(message.getMessageId());
+		if(message2 == null) {
+			return CommonResponse.error("没有该消息");
+		}
 		if (!StringUtils.equals(message.getOpenId(), message2.getOpenId())) {
 			return CommonResponse.error("不是本人的消息，不可已读");
 		}
@@ -56,6 +59,9 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public CommonResponse deleteMessageById(Message message) {
 		Message message2 = messageMapper.selectByPrimaryKey(message.getMessageId());
+		if(message2 == null) {
+			return CommonResponse.error("没有该消息");
+		}
 		if (!StringUtils.equals(message.getOpenId(), message2.getOpenId())) {
 			return CommonResponse.error("不是本人的消息，不可删除");
 		}

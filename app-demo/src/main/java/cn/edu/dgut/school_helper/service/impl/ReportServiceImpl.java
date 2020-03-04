@@ -39,6 +39,9 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public CommonResponse updateReport(Report report) {
 		Report report2 = reportMapper.selectByPrimaryKey(report.getReportId());
+		if(report2 == null) {
+			return CommonResponse.error("没有该举报");
+		}
 		if(IntegerCompareUtils.equals(report2.getReportId(), report2.getReportId())) {
 			return CommonResponse.error("不是本人的举报，不可更新");
 		}

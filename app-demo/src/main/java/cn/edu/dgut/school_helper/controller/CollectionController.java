@@ -30,7 +30,7 @@ public class CollectionController {
 	
 	@DeleteMapping("/{id}")
 	public CommonResponse deleteCollectionById(@PathVariable(name = "id") Integer collectionId,@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
-		return collectionService.deleteCollectionById(new Collection().setCollectionId(collectionId));
+		return collectionService.deleteCollectionById(new Collection().setCollectionId(collectionId).setOpenId(openId));
 	}
 	
 	

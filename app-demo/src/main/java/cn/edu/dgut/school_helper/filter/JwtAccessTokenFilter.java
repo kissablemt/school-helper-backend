@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,15 +21,22 @@ import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
 import cn.edu.dgut.school_helper.util.CommonResponse;
 import cn.edu.dgut.school_helper.util.JwtUtils;
 
-//@WebFilter(urlPatterns= {"/api/*"})
+@WebFilter(urlPatterns= {"/api/*"})
 public class JwtAccessTokenFilter extends OncePerRequestFilter {
 
+	
+	private static final Logger log = LoggerFactory.getLogger(JwtAccessTokenFilter.class);
+
+	
 	ObjectMapper mapper = new ObjectMapper();
 	
 	List<String> excludePath = new ArrayList<>();
 
 	{
-//		excludePath.add("/api/user/keepLogin");
+		excludePath.add("/api/user/keepLogin");
+		excludePath.add("/api/reply/selectAll/{postId}");
+		excludePath.add("/api/post/selectList");
+		excludePath.add("/api/school/selectAll");
 		excludePath.add("/api/user/login");
 	}
 	
@@ -45,6 +54,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 		}
 		
 		String accessToken = request.getHeader("Authorization");
+		log.info("before:" + accessToken);
 		accessToken = StringUtils.removeStart(accessToken, "Bearer ");
 		String openId = null;
 		// 根据accessToken获取openId
@@ -53,6 +63,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 			response.getWriter().print(mapper.writeValueAsString(CommonResponse.error("没有accessToken")));
 			return;
 		}
+		log.info("openId:" + openId);
 		request.setAttribute(JwtRequestConstant.OPEN_ID, openId);
 		filterChain.doFilter(request, response);
 	}

@@ -50,6 +50,9 @@ public class CollectionServiceImpl implements CollectionService {
 	@Override
 	public CommonResponse deleteCollectionById(Collection collection) {
 		Collection collection2 = collectionMapper.selectByPrimaryKey(collection.getCollectionId());
+		if(collection2 == null) {
+			return CommonResponse.error("没有该收藏");
+		}
 		if (!StringUtils.equals(collection.getOpenId(), collection2.getOpenId())) {
 			return CommonResponse.error("不是本人的收藏，不可删除");
 		}

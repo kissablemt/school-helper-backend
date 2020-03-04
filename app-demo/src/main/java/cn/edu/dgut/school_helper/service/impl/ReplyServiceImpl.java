@@ -85,6 +85,9 @@ public class ReplyServiceImpl implements ReplyService {
 	public CommonResponse deleteReplyById(Reply reply) {
 		// 非评论发起者，不允许删除
 		Reply reply2 = replyMapper.selectByPrimaryKey(reply.getReplyId());
+		if(reply2 == null) {
+			return CommonResponse.error("没有该回复");
+		}
 		if (reply2.getFromOpenId() != reply.getFromOpenId()) {
 			return CommonResponse.error("不能删除非自己发起的评论");
 		}

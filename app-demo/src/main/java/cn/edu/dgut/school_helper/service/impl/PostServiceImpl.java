@@ -65,6 +65,9 @@ public class PostServiceImpl implements PostService {
 	@Transactional
 	public CommonResponse updatePost(Post post, List<MultipartFile> images) {
 		Post post2 = postMapper.selectByPrimaryKey(post.getPostId());
+		if(post2 == null) {
+			return CommonResponse.error("没有该帖子");
+		}
 		if(!StringUtils.equals(post.getOpenId(), post2.getOpenId())) {
 			return CommonResponse.error("不是本人的帖子，不可更新");
 		}
@@ -88,6 +91,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public CommonResponse deletePostById(Post post) {
 		Post post2 = postMapper.selectByPrimaryKey(post.getPostId());
+		if(post2 == null) {
+			return CommonResponse.error("没有该帖子");
+		}
 		if(!StringUtils.equals(post.getOpenId(), post2.getOpenId())) {
 			return CommonResponse.error("不是本人的帖子，不可删除");
 		}
