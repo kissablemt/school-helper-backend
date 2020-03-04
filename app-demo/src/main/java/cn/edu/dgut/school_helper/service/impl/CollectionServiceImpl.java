@@ -1,5 +1,6 @@
 package cn.edu.dgut.school_helper.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +36,10 @@ public class CollectionServiceImpl implements CollectionService {
 		}
 		// 检查是否存在该帖子
 		Post post = postMapper.selectByPrimaryKey(collection.getPostId());
-		// 不知道会不会有bug integer比较,想着static final 没得问题
 		if (post == null || PostConstant.DELETED == post.getStatus()) {
 			return CommonResponse.error("没有该帖子");
 		}
+		collection.setStatus(CollectionConstant.UNDELETE);
 		int row = collectionMapper.insertSelective(collection);
 		if (row == 1) {
 			return CommonResponse.isOk(row);
@@ -48,6 +49,11 @@ public class CollectionServiceImpl implements CollectionService {
 
 	@Override
 	public CommonResponse deleteCollectionById(Collection collection) {
+		Collection collection2 = collectionMapper.selectByPrimaryKey(collection.getCollectionId());
+		if (!StringUtils.equals(collection.getOpenId(), collection2.getOpenId())) {
+			return CommonResponse.error("不是本人的收藏，不可删除");
+		}
+		
 		int row = collectionMapper.updateByPrimaryKeySelective(collection.setStatus(CollectionConstant.DELETED));
 		if (row == 1) {
 			return CommonResponse.isOk(row);

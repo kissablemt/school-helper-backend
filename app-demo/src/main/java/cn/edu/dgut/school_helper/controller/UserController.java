@@ -1,17 +1,11 @@
 package cn.edu.dgut.school_helper.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +14,7 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import cn.edu.dgut.school_helper.config.WxMaConfiguration;
-import cn.edu.dgut.school_helper.constant.JwtRequestConstant;import cn.edu.dgut.school_helper.filter.JwtAccessTokenFilter;
+import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
 import cn.edu.dgut.school_helper.pojo.User;
 import cn.edu.dgut.school_helper.service.UserService;
 import cn.edu.dgut.school_helper.util.CommonResponse;
@@ -67,12 +61,10 @@ public class UserController {
 	}
 
 	@GetMapping("/keepLogin")
-	public CommonResponse refreshTokenGetAcceessToken(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+	public CommonResponse keepLogin(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		String accessToken = JwtUtils.createAccessToken(openId);
 		return CommonResponse.isOk(accessToken);
 	}
-
-	
 	
 	private CommonResponse loginAndGetJwt(WxMaUserInfo userInfo) {
 		// TODO 如果是新用户把用户信息存入数据库。登录返回jwt字符串
@@ -88,10 +80,7 @@ public class UserController {
 				return CommonResponse.error("error");
 			}
 		}
-		Map<String,String> map = new HashMap<String,String>();
-		map.put(JwtRequestConstant.ACCESS_TOKNE, JwtUtils.createAccessToken(user.getOpenId()));
-		map.put(JwtRequestConstant.REFRESH_TOKNE,JwtUtils.createRefreshToken(user.getOpenId(), redisTemplate));
-		
-		return CommonResponse.isOk(map);
+		String accessToken = JwtUtils.createAccessToken(user.getOpenId());
+		return CommonResponse.isOk(accessToken);
 	}
 }

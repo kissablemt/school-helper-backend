@@ -2,6 +2,7 @@ package cn.edu.dgut.school_helper.service.impl;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,11 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public CommonResponse readMessage(Message message) {
+		Message message2 = messageMapper.selectByPrimaryKey(message.getMessageId());
+		if (!StringUtils.equals(message.getOpenId(), message2.getOpenId())) {
+			return CommonResponse.error("不是本人的消息，不可已读");
+		}
+		
 		int row = messageMapper.updateByPrimaryKeySelective(message.setStatus(MessageConstant.READED));
 		if (row == 1) {
 			return CommonResponse.isOk(row);
@@ -49,6 +55,10 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public CommonResponse deleteMessageById(Message message) {
+		Message message2 = messageMapper.selectByPrimaryKey(message.getMessageId());
+		if (!StringUtils.equals(message.getOpenId(), message2.getOpenId())) {
+			return CommonResponse.error("不是本人的消息，不可删除");
+		}
 		int row = messageMapper.updateByPrimaryKeySelective(message.setStatus(MessageConstant.DELETED));
 		if (row == 1) {
 			return CommonResponse.isOk(row);

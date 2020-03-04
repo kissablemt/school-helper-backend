@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,22 +23,22 @@ public class JwtUtils {
 	 */
 	public static final String JWT_SECRECT = "0xiao1yuan2xiao3zhu4";
 	/**
-	 * accessToken过期时间 5分钟
+	 * accessToken过期时间 7天
 	 */
-	public static final Integer JWT_TTL = 5 * 60 * 1000; // millisecond
+	public static final Integer JWT_TTL = 7 * 24 * 60 * 60 * 1000; //second
 	/**
 	 * accessToken刷新间隔
 	 * 
 	 */
-	public static final Integer JWT_REFRESH_INTERVAL = 55 * 60 * 1000; // millisecond
+//	public static final Integer JWT_REFRESH_INTERVAL = 25 * 60 * 1000; // second
 	/**
 	 * refreshToken过期时间
 	 */
-	public static final Integer JWT_REFRESH_TOKEN_TTL = 12 * 60 * 60 * 1000; // millisecond
+//	public static final Integer JWT_REFRESH_TOKEN_TTL = 7 * 24 * 60 * 60 * 1000; // second
 	/**
 	 * redis中的refreshToken表名 
 	 */
-	public static final String JWT_REFRESH_TABLE = "refreshToken:";
+//	public static final String JWT_REFRESH_TABLE = "refreshToken:";
 
 	private static Algorithm algorithm;
 
@@ -63,20 +64,6 @@ public class JwtUtils {
 		return accessToken;
 	}
 
-	/**
-	 * 根据openid,返回refreshToken
-	 */
-	public static String createRefreshToken(String openId, RedisTemplate<String, String> redisTemplate) {
-		String refreshUuid = UUID.randomUUID().toString();
-		redisTemplate.opsForValue().set(JWT_REFRESH_TABLE + openId, refreshUuid,JWT_REFRESH_TOKEN_TTL);
-		String refreshToken = JWT.create()
-				.withSubject(openId)
-				.withClaim(JWT_REFRESH_TABLE + openId, refreshUuid)
-				.withIssuedAt(new Date(System.currentTimeMillis()))
-				.withExpiresAt(new Date(System.currentTimeMillis() + JWT_REFRESH_TOKEN_TTL)).withIssuedAt(new Date())
-				.sign(algorithm);
-		return refreshToken;
-	}
 
 	/**
 	 * 根据accessToken,返回openid
@@ -96,10 +83,26 @@ public class JwtUtils {
 		String openId = decodeJwt.getSubject();
 		return openId;
 	}
+	
+	/**
+	 * 根据openid,返回refreshToken
+	 */
+	/*public static String createRefreshToken(String openId, RedisTemplate<String, String> redisTemplate) {
+		String refreshUuid = UUID.randomUUID().toString();
+		redisTemplate.opsForValue().set(JWT_REFRESH_TABLE + openId, refreshUuid,JWT_REFRESH_TOKEN_TTL,TimeUnit.MICROSECONDS);
+		String refreshToken = JWT.create()
+				.withSubject(openId)
+				.withClaim(JWT_REFRESH_TABLE + openId, refreshUuid)
+				.withIssuedAt(new Date(System.currentTimeMillis()))
+				.withExpiresAt(new Date(System.currentTimeMillis() + JWT_REFRESH_TOKEN_TTL)).withIssuedAt(new Date())
+				.sign(algorithm);
+		return refreshToken;
+	}*/
+	
 	/**
 	 * 根据refreshToken,返回openid
 	 */
-	public static String verifyRefreshToken(String jwt, RedisTemplate<String, String> redisTemplate) {
+	/*public static String verifyRefreshToken(String jwt, RedisTemplate<String, String> redisTemplate) {
 
 		DecodedJWT decodedJWT = JWT.decode(jwt);
 		String openId = decodedJWT.getSubject();
@@ -116,5 +119,5 @@ public class JwtUtils {
 			return null;
 		}
 		return openId;
-	}
+	}*/
 }

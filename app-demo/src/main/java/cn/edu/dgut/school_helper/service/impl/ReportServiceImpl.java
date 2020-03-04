@@ -10,6 +10,7 @@ import cn.edu.dgut.school_helper.pojo.Post;
 import cn.edu.dgut.school_helper.pojo.Report;
 import cn.edu.dgut.school_helper.service.ReportService;
 import cn.edu.dgut.school_helper.util.CommonResponse;
+import cn.edu.dgut.school_helper.util.IntegerCompareUtils;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -37,8 +38,11 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public CommonResponse updateReport(Report report) {
-		// 处理完毕的帖子不允许修改
 		Report report2 = reportMapper.selectByPrimaryKey(report.getReportId());
+		if(IntegerCompareUtils.equals(report2.getReportId(), report2.getReportId())) {
+			return CommonResponse.error("不是本人的举报，不可更新");
+		}
+		// 处理完毕的帖子不允许修改
 		if (report2.getStatus() != ReportConstant.UNDO) {
 			return CommonResponse.error("该举报已经处理完毕，不允许修改");
 		}

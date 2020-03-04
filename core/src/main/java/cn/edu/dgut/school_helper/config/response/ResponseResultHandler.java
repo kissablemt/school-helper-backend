@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import cn.edu.dgut.school_helper.util.CommonResponse;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ResponseResultHandler implements ResponseBodyAdvice<Object> {
 
 	public static final String  RESPONSE_RESULT_ANN = "RESPONSE-RESULT-ANN";

@@ -60,6 +60,9 @@ public class ReplyServiceImpl implements ReplyService {
 				return CommonResponse.error("没有该父评论");
 			}
 		}
+		//根评论
+		reply.setParentId(-1);
+
 		// 发送消息，有人回复他了
 		Message message = new Message()
 				.setOpenId(reply.getToOpenId())
@@ -70,11 +73,12 @@ public class ReplyServiceImpl implements ReplyService {
 			return CommonResponse.error("发送消息失败");
 		}
 		//插入评论
+		reply.setStatus(ReplyConstant.UNDELETE);
 		int row = replyMapper.insertSelective(reply);
 		if (row != 1) {
 			throw new ServiceRuntimeExecption("插入回复失败");
 		}
-		return CommonResponse.isOk("插入成功");
+		return CommonResponse.isOk(row);
 	}
 
 	@Override
