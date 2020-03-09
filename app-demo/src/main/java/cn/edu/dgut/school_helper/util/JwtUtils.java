@@ -3,12 +3,9 @@ package cn.edu.dgut.school_helper.util;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

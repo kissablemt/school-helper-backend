@@ -7,7 +7,7 @@ import java.util.List;
 
 import cn.edu.dgut.school_helper.pojo.Image;
 
-public class PostDTO implements Serializable {
+public class PostOutputDTO implements Serializable {
 
 	private Integer postId;
 	private String openId;

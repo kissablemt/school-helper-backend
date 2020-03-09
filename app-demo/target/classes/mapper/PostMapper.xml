@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.dgut.school_helper.mapper.PostMapper">
-	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.PostDTO"
+	<resultMap type="cn.edu.dgut.school_helper.pojo.dto.PostOutputDTO"
 		id="postMapping">
 		<id property="postId" column="post_id" />
 		<result property="openId" column="open_id" />

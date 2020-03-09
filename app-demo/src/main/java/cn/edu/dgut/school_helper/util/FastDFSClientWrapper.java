@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.tobato.fastdfs.domain.fdfs.FileInfo;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
@@ -49,7 +50,7 @@ public class FastDFSClientWrapper {
 		logger.info(storePath.getGroup() + "===" + storePath.getPath() + "======" + storePath.getFullPath());
 		return storePath.getFullPath();
 	}
-
+	
 	/**
 	 * 下载文件
 	 *
@@ -71,6 +72,16 @@ public class FastDFSClientWrapper {
 	 */
 	public void deleteFile(String fileUrl) {
 		fastFileStorageClient.deleteFile(fileUrl);
+	}
+	
+	/**
+	 * 查询文件信息
+	 * @param group
+	 * @param path
+	 * @return
+	 */
+	public FileInfo queryFileInfo(String group, String path) {
+		return fastFileStorageClient.queryFileInfo(group, path);
 	}
 	
 	

@@ -184,8 +184,9 @@ public class Post implements Serializable {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public Post setDate(Date date) {
 		this.date = date;
+		return this;
 	}
 
 	/**

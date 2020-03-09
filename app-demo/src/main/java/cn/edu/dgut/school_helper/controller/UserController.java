@@ -1,10 +1,10 @@
 package cn.edu.dgut.school_helper.controller;
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,9 @@ import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
 import cn.edu.dgut.school_helper.pojo.User;
 import cn.edu.dgut.school_helper.service.UserService;
 import cn.edu.dgut.school_helper.util.CommonResponse;
+import cn.edu.dgut.school_helper.util.FastDFSClientWrapper;
 import cn.edu.dgut.school_helper.util.JwtUtils;
+import cn.edu.dgut.school_helper.util.OnlineUtils;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 @RestController
@@ -27,9 +29,10 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
-	RedisTemplate<String, String> redisTemplate;
+	private FastDFSClientWrapper fastDFSClientWrapper;
+	
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -37,8 +40,8 @@ public class UserController {
 	 * 登陆接口
 	 */
 	@GetMapping("/login")
-	public CommonResponse login(String appid, String code, String signature, String rawData,
-			String encryptedData, String iv) {
+	public CommonResponse login(String appid, String code, String signature, String rawData, String encryptedData,
+			String iv) {
 		if (StringUtils.isBlank(code)) {
 			return CommonResponse.error("empty jscode");
 		}
@@ -65,27 +68,35 @@ public class UserController {
 		String accessToken = JwtUtils.createAccessToken(openId);
 		return CommonResponse.isOk(accessToken);
 	}
-	
+
 	@GetMapping("/getUserInfo")
 	public CommonResponse getUserInfo(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		return CommonResponse.isOk(userService.getUserInfo(new User().setOpenId(openId)));
-		
+
 	}
-	
+
 	private CommonResponse loginAndGetJwt(WxMaUserInfo userInfo) {
-		// TODO 如果是新用户把用户信息存入数据库。登录返回jwt字符串
+
+		String accessToken = JwtUtils.createAccessToken(userInfo.getOpenId());
+		// 存在用户
+		if (userService.checkUserExistByOpenId(new User().setOpenId(userInfo.getOpenId()))) {
+			return CommonResponse.isOk(accessToken);
+		}
+		//上传头像
+		byte[] bytes =  OnlineUtils.getImageBytes(userInfo.getAvatarUrl());
+		String headUrl = fastDFSClientWrapper.uploadFile(bytes, bytes.length, "jpg");
+		//保存到数据库
 		User user = new User().setOpenId(userInfo.getOpenId())
 				.setNickname(userInfo.getNickName())
-				.setHeadPortraitUrl(userInfo.getAvatarUrl())
+				.setHeadPortraitUrl(headUrl)
 				.setFaithValue(100)
 				.setSchoolId(1);
-		// 不存在用户
-		if (!userService.checkUserExistByOpenId(new User().setOpenId(userInfo.getOpenId()))) {
-			if (!userService.addUser(user)) {
-				return CommonResponse.error("error");
-			}
+		if (!userService.addUser(user)) {
+			return CommonResponse.error("error");
 		}
-		String accessToken = JwtUtils.createAccessToken(user.getOpenId());
+		
 		return CommonResponse.isOk(accessToken);
 	}
+	
+	
 }
