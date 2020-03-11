@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.edu.dgut.school_helper</groupId>
-	<artifactId>security-gc</artifactId>
+	<artifactId>school_helper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -11,7 +11,7 @@
 	<dependencyManagement>
 		<!--引入spring io 以及 spirng cloud 项目进行依赖管理 -->
 		<dependencies>
-			<!-- <dependency> <groupId>io.spring.platform</groupId> <artifactId>platform-bom</artifactId>  
+			<!-- <dependency> <groupId>io.spring.platform</groupId> <artifactId>platform-bom</artifactId>
 				<version>Brussels-SR4</version> <type>pom</type> <scope>import</scope> </dependency> -->
 			<dependency>
 				<groupId>io.spring.platform</groupId>
@@ -20,7 +20,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -29,14 +29,16 @@
 				<scope>import</scope>
 			</dependency>
 
-
-
-			<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-dependencies</artifactId> 
+			<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-dependencies</artifactId>
 				<version>Dalston.SR2</version> <type>pom</type> <scope>import</scope> </dependency> -->
 		</dependencies>
 	</dependencyManagement>
 
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 	<!--设置项目的编译以及运行版本 -->
 	<build>
 		<plugins>
@@ -55,7 +57,7 @@
 
 	<modules>
 		<module>core</module>
-		<module>app</module> 
+		<module>app</module>
 		<module>app-demo</module>
 		<module>browser</module>
 		<module>browser-demo</module>

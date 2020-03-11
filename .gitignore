@@ -7,12 +7,12 @@
 # BlueJ files
 *.ctxt
 
-#eclipse config
-.project
-.metadata/
-.settings/
-.classpath
-target/*
+.gitignore
+#idea
+.idea
+/**/transaction-logs
+/**/*.iml
+/**/target
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
