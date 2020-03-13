@@ -33,8 +33,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 	List<String> excludePath = new ArrayList<>();
 
 	{
-		excludePath.add("/api/user/keepLogin");
-		excludePath.add("/api/reply/selectAll/{postId}");
+		excludePath.add("/api/reply/selectAll");
 		excludePath.add("/api/post/selectList");
 		excludePath.add("/api/school/selectAll");
 		excludePath.add("/api/user/login");
@@ -47,7 +46,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 		
 		//排除refreshToken的路径
 		for (String path : excludePath) {
-			if (StringUtils.equals(path, request.getRequestURI())) {
+			if (StringUtils.startsWith(request.getRequestURI(), path)) {
 				filterChain.doFilter(request, response);
 				return;
 			}

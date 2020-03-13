@@ -63,7 +63,7 @@ public class PostController {
 	}
 
 	@DeleteMapping("/{postId}")
-	public CommonResponse deletePostById(@PathVariable(name = "id") Integer postId,
+	public CommonResponse deletePostById(@PathVariable(name = "postId") Integer postId,
 			@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		return postService.deletePostById(new Post().setPostId(postId).setOpenId(openId));
 	}

@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="60 seconds"
 	debug="false">
 	
-	<property name="logdir" value="logs" />
+	<property name="logdir" value="/data/logs" />
 	<property name="appname" value="log" />
 
 	<contextName>logback</contextName>

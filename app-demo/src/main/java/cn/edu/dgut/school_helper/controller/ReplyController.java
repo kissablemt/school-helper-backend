@@ -29,8 +29,8 @@ public class ReplyController {
 		return replyService.addReply(reply.setFromOpenId(openId));
 	}
 
-	@DeleteMapping("/{id}")
-	public CommonResponse deleteReplyById(@PathVariable(name = "id") Integer replyId,
+	@DeleteMapping("/{replyId}")
+	public CommonResponse deleteReplyById(@PathVariable(name = "replyId") Integer replyId,
 			@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		return replyService.deleteReplyById(new Reply().setReplyId(replyId).setFromOpenId(openId));
 	}

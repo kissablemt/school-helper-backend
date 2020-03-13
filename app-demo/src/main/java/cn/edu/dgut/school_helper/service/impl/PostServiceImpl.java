@@ -78,15 +78,16 @@ public class PostServiceImpl implements PostService {
 		if (row != 1) {
 			return CommonResponse.error("更新帖子失败");
 		}
+		//不获取新的图片路径
+		List<Image> oldLocation = imageMapper.select(new Image().setPostId(post.getPostId()));
 		// 插入新的图片
 		uploadImages(post.getPostId(), imageStrs);
 		// 删除旧的图片
-		List<Image> oldLocation = imageMapper.select(new Image().setPostId(post.getPostId()));
 		for (Image image : oldLocation) {
 			fastDFSClient.deleteFile(image.getImageUrl());
 			imageMapper.deleteByPrimaryKey(image.getImageId());
 		}
-		return CommonResponse.error("更新成功");
+		return CommonResponse.isOk("更新成功");
 	}
 
 	@Override
@@ -138,13 +139,10 @@ public class PostServiceImpl implements PostService {
 				byte[] bytes = Base64Utils.decode(imageStr);
 				imagesLocation.add(fastDFSClient.uploadFile(bytes, bytes.length, "jpg"));
 			}
-			if(j == 1) {
-				throw new ServiceRuntimeExecption("ces");
-			}
 			// 图片位置存入数据库
 			for (int i = 0; i < imagesLocation.size(); i++) {
 				imageMapper
-						.insertSelective(new Image().setImageUrl(imagesLocation.get(i)).setOrder(i).setPostId(postId));
+						.insertSelective(new Image().setImageUrl(imagesLocation.get(i)).setOrder(i+1).setPostId(postId));
 			}
 
 		} catch (Exception e) {

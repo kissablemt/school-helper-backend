@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,10 +60,10 @@ public class ReplyServiceImpl implements ReplyService {
 			if (reply2 == null) {
 				return CommonResponse.error("没有该父评论");
 			}
+		}else {
+			//根评论
+			reply.setParentId(-1);
 		}
-		//根评论
-		reply.setParentId(-1);
-
 		// 发送消息，有人回复他了
 		Message message = new Message()
 				.setOpenId(reply.getToOpenId())
@@ -73,6 +74,7 @@ public class ReplyServiceImpl implements ReplyService {
 			return CommonResponse.error("发送消息失败");
 		}
 		//插入评论
+		reply.setDate(new Date());
 		reply.setStatus(ReplyConstant.UNDELETE);
 		int row = replyMapper.insertSelective(reply);
 		if (row != 1) {
@@ -88,7 +90,7 @@ public class ReplyServiceImpl implements ReplyService {
 		if(reply2 == null) {
 			return CommonResponse.error("没有该回复");
 		}
-		if (reply2.getFromOpenId() != reply.getFromOpenId()) {
+		if (!StringUtils.equals(reply2.getFromOpenId(), reply.getFromOpenId())) {
 			return CommonResponse.error("不能删除非自己发起的评论");
 		}
 		int row = replyMapper.updateByPrimaryKeySelective(reply.setStatus(ReplyConstant.DELETED));

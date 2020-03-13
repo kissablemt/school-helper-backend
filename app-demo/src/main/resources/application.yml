@@ -1,8 +1,8 @@
 spring:
   datasource:
     username: root
-    password: 1240023706
-    url: jdbc:mysql://127.0.0.1:3306/school_helper?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+    password: xiaoyuanxiaozhu
+    url: jdbc:mysql://101.132.142.58:3306/school_helper?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
     druid:
       initial-size: 1
@@ -46,9 +46,9 @@ logging:
 fdfs:
   connect-timeout: 600
   so-timeout: 1500
-  web-server-url: http://192.168.106.140:8888/
+  web-server-url: http://101.132.142.58:8888/
   tracker-list:
-  - 192.168.106.140:22122  
+  - 101.132.142.58:22122
   thumb-image:
     height: 150 
     width: 150
