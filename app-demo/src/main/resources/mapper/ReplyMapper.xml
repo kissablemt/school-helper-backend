@@ -32,6 +32,7 @@
 		<include refid="baseQuerySql"></include>
 		AND r.parent_id = #{parentId} ORDER BY date DESC;
 	</select>
+
 	<select id="selectAllReplyByPostId" resultMap="allReply">
 		<include refid="baseQuerySql"></include>
 		AND r.parent_id = -1 ORDER BY reply_id DESC

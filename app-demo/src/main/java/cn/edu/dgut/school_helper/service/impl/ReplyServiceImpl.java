@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import cn.edu.dgut.school_helper.util.IntegerCompareUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,11 +55,14 @@ public class ReplyServiceImpl implements ReplyService {
 		if (post == null) {
 			return CommonResponse.error("没有该帖子");
 		}
-		// 检查是否有该父评论
+		// 检查是否有该父评论,且父评论为根评论
 		if (reply.getParentId() != null) {
 			Reply reply2 = replyMapper.selectByPrimaryKey(reply.getParentId());
 			if (reply2 == null) {
 				return CommonResponse.error("没有该父评论");
+			}
+			if(!IntegerCompareUtils.equals(reply2.getParentId(), -1)){
+				return  CommonResponse.error("父评论非根评论");
 			}
 		}else {
 			//根评论
@@ -93,6 +97,7 @@ public class ReplyServiceImpl implements ReplyService {
 		if (!StringUtils.equals(reply2.getFromOpenId(), reply.getFromOpenId())) {
 			return CommonResponse.error("不能删除非自己发起的评论");
 		}
+		// 不允许删除有子评论的
 		int row = replyMapper.updateByPrimaryKeySelective(reply.setStatus(ReplyConstant.DELETED));
 		if (row == 1) {
 			return CommonResponse.isOk(row);

@@ -44,19 +44,19 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		//排除refreshToken的路径
+		// 排除refreshToken的路径
 		for (String path : excludePath) {
 			if (StringUtils.startsWith(request.getRequestURI(), path)) {
 				filterChain.doFilter(request, response);
 				return;
 			}
 		}
-		
+		// 获取accessToken
 		String accessToken = request.getHeader("Authorization");
 		log.info("before:" + accessToken);
 		accessToken = StringUtils.removeStart(accessToken, "Bearer ");
 		String openId = null;
-		// 根据accessToken获取openId
+		// 获取openId
 		if (!StringUtils.isNotBlank(accessToken) || (openId = JwtUtils.verifyAccessToken(accessToken)) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			response.getWriter().print(mapper.writeValueAsString(CommonResponse.error("没有accessToken")));

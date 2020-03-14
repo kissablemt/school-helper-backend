@@ -5,10 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
@@ -23,80 +20,92 @@ import cn.edu.dgut.school_helper.util.JwtUtils;
 import cn.edu.dgut.school_helper.util.OnlineUtils;
 import me.chanjar.weixin.common.error.WxErrorException;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private FastDFSClientWrapper fastDFSClientWrapper;
-	
-	
-	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    private FastDFSClientWrapper fastDFSClientWrapper;
 
-	/**
-	 * 登陆接口
-	 */
-	@GetMapping("/login")
-	public CommonResponse login(String appid, String code, String signature, String rawData, String encryptedData,
-			String iv) {
-		if (StringUtils.isBlank(code)) {
-			return CommonResponse.error("empty jscode");
-		}
 
-		final WxMaService wxService = WxMaConfiguration.getMaService(appid);
-		try {
-			WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
-			String sessionKey = session.getSessionKey();
-			if (!wxService.getUserService().checkUserInfo(sessionKey, rawData, signature)) {
-				return CommonResponse.error("user check failed");
-			}
-			// 解密用户信息
-			WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
-			log.info(userInfo.toString());
-			return loginAndGetJwt(userInfo);
-		} catch (WxErrorException e) {
-			log.error(e.getMessage(), e);
-			return CommonResponse.error("出错了");
-		}
-	}
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-	@GetMapping("/keepLogin")
-	public CommonResponse keepLogin(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
-		String accessToken = JwtUtils.createAccessToken(openId);
-		return CommonResponse.isOk(accessToken);
-	}
+    /**
+     * 登陆接口
+     */
+    @GetMapping("/login")
+    public CommonResponse login(String appid, String code, String signature, String rawData, String encryptedData,
+                                String iv) {
+        if (StringUtils.isBlank(code)) {
+            return CommonResponse.error("empty jscode");
+        }
 
-	@GetMapping("/getUserInfo")
-	public CommonResponse getUserInfo(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
-		return CommonResponse.isOk(userService.getUserInfo(new User().setOpenId(openId)));
+        final WxMaService wxService = WxMaConfiguration.getMaService(appid);
+        try {
+            WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
+            String sessionKey = session.getSessionKey();
+            if (!wxService.getUserService().checkUserInfo(sessionKey, rawData, signature)) {
+                return CommonResponse.error("user check failed");
+            }
+            // 解密用户信息
+            WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
+            log.info(userInfo.toString());
+            return loginAndGetJwt(userInfo);
+        } catch (WxErrorException e) {
+            log.error(e.getMessage(), e);
+            return CommonResponse.error("出错了");
+        }
+    }
 
-	}
+    @GetMapping("/keepLogin")
+    public CommonResponse keepLogin(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+        String accessToken = JwtUtils.createAccessToken(openId);
+        return CommonResponse.isOk(accessToken);
+    }
 
-	private CommonResponse loginAndGetJwt(WxMaUserInfo userInfo) {
+    @GetMapping("/getUserInfo")
+    public CommonResponse getUserInfo(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+        return CommonResponse.isOk(userService.getUserInfo(new User().setOpenId(openId)));
 
-		String accessToken = JwtUtils.createAccessToken(userInfo.getOpenId());
-		// 存在用户
-		if (userService.checkUserExistByOpenId(new User().setOpenId(userInfo.getOpenId()))) {
-			return CommonResponse.isOk(accessToken);
-		}
-		//上传头像
-		byte[] bytes =  OnlineUtils.getImageBytes(userInfo.getAvatarUrl());
-		String headUrl = fastDFSClientWrapper.uploadFile(bytes, bytes.length, "jpg");
-		//保存到数据库
-		User user = new User().setOpenId(userInfo.getOpenId())
-				.setNickname(userInfo.getNickName())
-				.setHeadPortraitUrl(headUrl)
-				.setFaithValue(100)
-				.setSchoolId(1);
-		if (!userService.addUser(user)) {
-			return CommonResponse.error("error");
-		}
-		
-		return CommonResponse.isOk(accessToken);
-	}
-	
-	
+    }
+
+    private CommonResponse loginAndGetJwt(WxMaUserInfo userInfo) {
+
+        String accessToken = JwtUtils.createAccessToken(userInfo.getOpenId());
+        // 存在用户
+        if (userService.checkUserExistByOpenId(new User().setOpenId(userInfo.getOpenId()))) {
+            return CommonResponse.isOk(accessToken);
+        }
+        //上传头像
+        byte[] bytes = OnlineUtils.getImageBytes(userInfo.getAvatarUrl());
+        String headUrl = fastDFSClientWrapper.uploadFile(bytes, bytes.length, "jpg");
+        //保存到数据库
+        User user = new User().setOpenId(userInfo.getOpenId())
+                .setNickname(userInfo.getNickName())
+                .setHeadPortraitUrl(headUrl)
+                .setFaithValue(100)
+                .setSchoolId(1);
+        if (!userService.addUser(user)) {
+            return CommonResponse.error("error");
+        }
+
+        return CommonResponse.isOk(accessToken);
+    }
+
+    @PutMapping
+    private CommonResponse updateUser(@RequestBody User user, @RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+        return userService.updateUser(user.setOpenId(openId));
+    }
+
+    @PutMapping("/headPortrait")
+    private CommonResponse updateHeadPortrait(@RequestBody Map headPortraitMap, @RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+        String headPortrait  = (String) headPortraitMap.get("headPortrait");
+        return userService.updateHeadPortrait(openId, headPortrait);
+    }
+
 }
