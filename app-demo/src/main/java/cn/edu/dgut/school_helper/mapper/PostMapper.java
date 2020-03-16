@@ -17,4 +17,6 @@ public interface PostMapper extends tk.mybatis.mapper.common.Mapper<Post> {
 	List<PostOutputDTO> selectAllPostByOpenId(String openId);
 
 	List<PostOutputDTO> selectPostListPaging(@Param("postType") Integer postType, @Param("goodsType") Integer goodsType);
+
+	List<PostOutputDTO> selectSecondHandPostListPaging();
 }

@@ -76,7 +76,11 @@ public class PostController {
 	@GetMapping("/selectList")
 	public CommonResponse selectAllPostList(@ModelAttribute PostQueryDTO postQueryDTO) {
 		log.info(ReflectionToStringBuilder.toString(postQueryDTO, ToStringStyle.MULTI_LINE_STYLE));
-		System.out.println(postQueryDTO.toString());
 		return postService.selectPostListPaging(postQueryDTO);
+	}
+	@GetMapping("/selectSecondHandList")
+	public CommonResponse selectSecondHandPostListPaging(@ModelAttribute PostQueryDTO postQueryDTO) {
+		log.info(ReflectionToStringBuilder.toString(postQueryDTO, ToStringStyle.MULTI_LINE_STYLE));
+		return postService.selectSecondHandPostListPaging(postQueryDTO);
 	}
 }

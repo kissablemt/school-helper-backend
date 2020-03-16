@@ -43,4 +43,14 @@
 			and p.goods_type = #{goodsType}
 		</if>
 	</select>
+
+	<select id="selectSecondHandPostListPaging" resultMap="postMapping">
+		SELECT
+		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
+		LEFT JOIN
+		user u
+		on p.open_id = u.open_id
+		where p.post_type = 1 or p.post_type = 2
+	</select>
+
 </mapper>

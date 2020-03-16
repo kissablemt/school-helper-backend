@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 			}
 			// 删除图片
 			fastDFSClient.deleteFile(user.getHeadPortraitUrl());
-			return CommonResponse.isOk("更新头像成功");
+			return CommonResponse.isOk(path);
 
         } catch (Exception e) {
         	if(path != null){

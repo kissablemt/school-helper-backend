@@ -130,6 +130,13 @@ public class PostServiceImpl implements PostService {
 		return CommonResponse.isOk(posts);
 	}
 
+	@Override
+	public CommonResponse selectSecondHandPostListPaging(PostQueryDTO postQueryDTO) {
+		PageHelper.startPage(postQueryDTO.getPageNum(), postQueryDTO.getPageSize());
+		List<PostOutputDTO> posts = postMapper.selectSecondHandPostListPaging();
+		return CommonResponse.isOk(posts);
+	}
+
 	private void uploadImages(Integer postId, String[] imageStrs) {
 
 		List<String> imagesLocation = new ArrayList<>();
