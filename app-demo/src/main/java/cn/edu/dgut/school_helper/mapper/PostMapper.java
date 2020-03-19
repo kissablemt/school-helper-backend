@@ -14,9 +14,9 @@ import cn.edu.dgut.school_helper.pojo.dto.PostOutputDTO;
  */
 public interface PostMapper extends tk.mybatis.mapper.common.Mapper<Post> {
 
-	List<PostOutputDTO> selectAllPostByOpenId(String openId);
+    List<PostOutputDTO> selectAllPostByOpenId(String openId);
 
-	List<PostOutputDTO> selectPostListPaging(@Param("postType") Integer postType, @Param("goodsType") Integer goodsType);
+    List<PostOutputDTO> selectPostListPaging(@Param("postType") Integer postType, @Param("goodsType") Integer goodsType, @Param("keyword") String keyword);
 
-	List<PostOutputDTO> selectSecondHandPostListPaging();
+    List<PostOutputDTO> selectSecondHandPostListPaging(String keyword);
 }

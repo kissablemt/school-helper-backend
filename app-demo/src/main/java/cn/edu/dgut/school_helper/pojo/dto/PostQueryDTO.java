@@ -3,7 +3,7 @@ package cn.edu.dgut.school_helper.pojo.dto;
 import java.io.Serializable;
 
 public class PostQueryDTO implements Serializable{
-	
+
 	/**
 	 * 1-二手书，2-二手车，3-数码，4-家电，5-其他
 	 */
@@ -12,11 +12,12 @@ public class PostQueryDTO implements Serializable{
 	 * 1-卖，2-求购，3-失物招领，4-义捐活动
 	 */
 	private Integer postType;
+	private String keyword;
 	private Integer pageNum;
 	private Integer pageSize;
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public Integer getGoodsType() {
 		return goodsType;
 	}
@@ -41,6 +42,6 @@ public class PostQueryDTO implements Serializable{
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
-	
-	
+	public String getKeyword() { return keyword; }
+	public void setKeyword(String keyword) { this.keyword = keyword; }
 }

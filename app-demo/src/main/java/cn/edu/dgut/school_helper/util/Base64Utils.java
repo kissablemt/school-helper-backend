@@ -8,7 +8,6 @@ public class Base64Utils {
 	public static final Base64.Encoder encoder = Base64.getEncoder();
 
 	public static byte[] decode(String base64Str) {
-		System.out.println(base64Str);
 		return decoder.decode(base64Str);
 	}
 	

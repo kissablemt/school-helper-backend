@@ -32,7 +32,7 @@ public class UserLogAspect {
 	private static final Logger log = LoggerFactory.getLogger(UserLogAspect.class);
 
 	// .. 当前包及子包路径
-	@Pointcut("execution(* cn.edu.dgut.school_helper..service.impl..*.*(..)) && !execution(* cn.edu.dgut.school_helper..service.impl.UserLogServiceImpl.*(..))")
+	@Pointcut("execution(* cn.edu.dgut.school_helper..service.impl..*.*(..)) && !execution(* cn.edu.dgut.school_helper..service.impl.UserLogServiceImpl.*(..)) && !execution(* cn.edu.dgut.school_helper..service.impl.MiniAppServiceImpl.*(..))")
 	public void pointcut() {
 	}
 

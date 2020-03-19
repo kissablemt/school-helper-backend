@@ -24,6 +24,7 @@
 		</collection>
 	</resultMap>
 
+
 	<select id="selectAllPostByOpenId" resultMap="postMapping">
 		SELECT
 		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
@@ -33,24 +34,34 @@
 	</select>
 
 	<select id="selectPostListPaging" resultMap="postMapping">
+		<bind name="keywordLike" value="'%' + keyword + '%'" />
 		SELECT
 		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
 		LEFT JOIN
 		user u
 		on p.open_id = u.open_id
-		where p.post_type = #{postType}
+		where
+			(p.post_type = #{postType}
 		<if test="postType == 1 or postType == 2">
 			and p.goods_type = #{goodsType}
+		</if>
+		)
+		<if test="keyword != null and keyword != ''">
+			 and p.headline like #{keywordLike}
 		</if>
 	</select>
 
 	<select id="selectSecondHandPostListPaging" resultMap="postMapping">
+		<bind name="keywordLike" value="'%' + keyword + '%'" />
 		SELECT
 		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
 		LEFT JOIN
 		user u
 		on p.open_id = u.open_id
-		where p.post_type = 1 or p.post_type = 2
+		where (p.post_type = 1 or p.post_type = 2)
+		<if test="keyword != null and keyword != ''">
+			and p.headline like #{keywordLike}
+		</if>
 	</select>
 
 </mapper>

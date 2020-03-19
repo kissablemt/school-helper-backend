@@ -1,9 +1,15 @@
 package cn.edu.dgut.school_helper.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import cn.edu.dgut.school_helper.service.MiniAppService;
+import cn.edu.dgut.school_helper.service.impl.MiniAppServiceImpl;
+import cn.edu.dgut.school_helper.util.OnlineUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +38,19 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
+	@Autowired
+	MiniAppService miniAppService;
+
 	private static final Logger log = LoggerFactory.getLogger(PostController.class);
 
 	@PostMapping
 	public CommonResponse addPost(@RequestBody PostInputDTO postInputDTO,
 			@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
-		String[] imagesStr = postInputDTO.getImages().split(",");
+		String[] imageStrs = postInputDTO.getImages().split(",");
+		//敏感图片验证不通过
+		if(!miniAppService.validateSensitiveImage(imageStrs)){
+			return CommonResponse.error("含有图片敏感内容");
+		}
 		Post post = new Post().setOpenId(openId)
 				.setHeadline(postInputDTO.getHeadline())
 				.setContent(postInputDTO.getContent())
@@ -45,13 +58,17 @@ public class PostController {
 				.setGoodsType(postInputDTO.getGoodsType())
 				.setMoney(postInputDTO.getMoney())
 				.setDate(new Date());
-		return postService.addPost(post.setOpenId(openId), imagesStr);
+		return postService.addPost(post.setOpenId(openId), imageStrs);
 	}
 
 	@PutMapping
 	public CommonResponse updatePost(@RequestBody PostInputDTO postInputDTO,
 			@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
-		String[] imagesStr = postInputDTO.getImages().split(",");
+		String[] imageStrs = postInputDTO.getImages().split(",");
+		//敏感图片验证不通过
+		if(!miniAppService.validateSensitiveImage(imageStrs)){
+			return CommonResponse.error("含有图片敏感内容");
+		}
 		Post post = new Post().setOpenId(openId)
 				.setHeadline(postInputDTO.getHeadline())
 				.setContent(postInputDTO.getContent())
@@ -59,7 +76,7 @@ public class PostController {
 				.setPostType(postInputDTO.getPostType())
 				.setGoodsType(postInputDTO.getGoodsType())
 				.setMoney(postInputDTO.getMoney());
-		return postService.updatePost(post.setOpenId(openId), imagesStr);
+		return postService.updatePost(post.setOpenId(openId), imageStrs);
 	}
 
 	@DeleteMapping("/{postId}")
@@ -83,4 +100,5 @@ public class PostController {
 		log.info(ReflectionToStringBuilder.toString(postQueryDTO, ToStringStyle.MULTI_LINE_STYLE));
 		return postService.selectSecondHandPostListPaging(postQueryDTO);
 	}
+
 }
