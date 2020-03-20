@@ -1,8 +1,8 @@
 package cn.edu.dgut.school_helper.config;
 
-import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>

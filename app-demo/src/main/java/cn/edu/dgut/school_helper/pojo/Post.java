@@ -1,13 +1,12 @@
 package cn.edu.dgut.school_helper.pojo;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Table(name = "`post`")
 public class Post implements Serializable {

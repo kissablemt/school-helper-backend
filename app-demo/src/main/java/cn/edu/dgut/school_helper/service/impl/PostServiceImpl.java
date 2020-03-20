@@ -1,16 +1,5 @@
 package cn.edu.dgut.school_helper.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.github.pagehelper.PageHelper;
-
-import cn.edu.dgut.school_helper.config.response.ServiceRuntimeExecption;
 import cn.edu.dgut.school_helper.constant.PostConstant;
 import cn.edu.dgut.school_helper.mapper.ImageMapper;
 import cn.edu.dgut.school_helper.mapper.PostMapper;
@@ -22,8 +11,16 @@ import cn.edu.dgut.school_helper.pojo.dto.PostOutputDTO;
 import cn.edu.dgut.school_helper.pojo.dto.PostQueryDTO;
 import cn.edu.dgut.school_helper.service.PostService;
 import cn.edu.dgut.school_helper.util.Base64Utils;
-import cn.edu.dgut.school_helper.util.CommonResponse;
 import cn.edu.dgut.school_helper.util.FastDFSClientWrapper;
+import cn.edu.dgut.school_helper.util.JsonResult;
+import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -42,41 +39,41 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public CommonResponse addPost(Post post, String[] imageStrs) {
+    public JsonResult addPost(Post post, String[] imageStrs) {
         User user = userMapper.selectByPrimaryKey(post.getOpenId());
         if (user == null) {
-            return CommonResponse.error("没有该用户");
+            return JsonResult.errorMsg("没有该用户");
         }
 
         post.setStatus(PostConstant.RELEASE);
         int row = postMapper.insertSelective(post);
         if (row != 1) {
-            return CommonResponse.error("插入post失败");
+            return JsonResult.errorMsg("插入post失败");
         }
         // 或许有用
         if (imageStrs.length == 0) {
-            return CommonResponse.error("该贴子没有图片");
+            return JsonResult.errorMsg("该贴子没有图片");
         }
 
         uploadImages(post.getPostId(), imageStrs);
-        return CommonResponse.isOk(row);
+        return JsonResult.ok(row);
     }
 
     @Override
     @Transactional
-    public CommonResponse updatePost(Post post, String[] imageStrs) {
+    public JsonResult updatePost(Post post, String[] imageStrs) {
         Post post2 = postMapper.selectByPrimaryKey(post.getPostId());
         if (post2 == null) {
-            return CommonResponse.error("没有该帖子");
+            return JsonResult.errorMsg("没有该帖子");
         }
         if (!StringUtils.equals(post.getOpenId(), post2.getOpenId())) {
-            return CommonResponse.error("不是本人的帖子，不可更新");
+            return JsonResult.errorMsg("不是本人的帖子，不可更新");
         }
 
         post.setStatus(PostConstant.RELEASE);
         int row = postMapper.updateByPrimaryKeySelective(post);
         if (row != 1) {
-            return CommonResponse.error("更新帖子失败");
+            return JsonResult.errorMsg("更新帖子失败");
         }
         //不获取新的图片路径
         List<Image> oldLocation = imageMapper.select(new Image().setPostId(post.getPostId()));
@@ -87,18 +84,18 @@ public class PostServiceImpl implements PostService {
             fastDFSClient.deleteFile(image.getImageUrl());
             imageMapper.deleteByPrimaryKey(image.getImageId());
         }
-        return CommonResponse.isOk("更新成功");
+        return JsonResult.ok("更新成功");
     }
 
     @Override
     @Transactional
-    public CommonResponse deletePostById(Post post) {
+    public JsonResult deletePostById(Post post) {
         Post post2 = postMapper.selectByPrimaryKey(post.getPostId());
         if (post2 == null) {
-            return CommonResponse.error("没有该帖子");
+            return JsonResult.errorMsg("没有该帖子");
         }
         if (!StringUtils.equals(post.getOpenId(), post2.getOpenId())) {
-            return CommonResponse.error("不是本人的帖子，不可删除");
+            return JsonResult.errorMsg("不是本人的帖子，不可删除");
         }
 
         int row = postMapper
@@ -112,35 +109,34 @@ public class PostServiceImpl implements PostService {
 
         // 图片就不管了
         if (row == 1) {
-            return CommonResponse.isOk(row);
+            return JsonResult.ok(row);
         }
-        return CommonResponse.error("删除失败");
+        return JsonResult.errorMsg("删除失败");
     }
 
     @Override
-    public CommonResponse selectAllPostByOpenId(Post post) {
-        return CommonResponse.isOk(postMapper.selectAllPostByOpenId(post.getOpenId()));
+    public JsonResult selectAllPostByOpenId(Post post) {
+        return JsonResult.ok(postMapper.selectAllPostByOpenId(post.getOpenId()));
     }
 
     @Override
-    public CommonResponse selectPostListPaging(PostQueryDTO postQueryDTO) {
+    public JsonResult selectPostListPaging(PostQueryDTO postQueryDTO) {
         PageHelper.startPage(postQueryDTO.getPageNum(), postQueryDTO.getPageSize());
         List<PostOutputDTO> posts = postMapper.selectPostListPaging(postQueryDTO.getPostType(),
                 postQueryDTO.getGoodsType(), postQueryDTO.getKeyword());
-        return CommonResponse.isOk(posts);
+        return JsonResult.ok(posts);
     }
 
     @Override
-    public CommonResponse selectSecondHandPostListPaging(PostQueryDTO postQueryDTO) {
+    public JsonResult selectSecondHandPostListPaging(PostQueryDTO postQueryDTO) {
         PageHelper.startPage(postQueryDTO.getPageNum(), postQueryDTO.getPageSize());
         List<PostOutputDTO> posts = postMapper.selectSecondHandPostListPaging(postQueryDTO.getKeyword());
-        return CommonResponse.isOk(posts);
+        return JsonResult.ok(posts);
     }
 
     private void uploadImages(Integer postId, String[] imageStrs) {
 
         List<String> imagesLocation = new ArrayList<>();
-        int j = 1;
         try {
             for (String imageStr : imageStrs) {
                 byte[] bytes = Base64Utils.decode(imageStr);

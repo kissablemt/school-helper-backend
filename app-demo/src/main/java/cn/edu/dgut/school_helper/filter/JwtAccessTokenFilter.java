@@ -1,25 +1,22 @@
 package cn.edu.dgut.school_helper.filter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
+import cn.edu.dgut.school_helper.util.JsonResult;
+import cn.edu.dgut.school_helper.util.JwtUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
-import cn.edu.dgut.school_helper.util.CommonResponse;
-import cn.edu.dgut.school_helper.util.JwtUtils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebFilter(urlPatterns= {"/api/*"})
 public class JwtAccessTokenFilter extends OncePerRequestFilter {
@@ -61,7 +58,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 		// 获取openId
 		if (!StringUtils.isNotBlank(accessToken) || (openId = JwtUtils.verifyAccessToken(accessToken)) == null) {
 			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().print(mapper.writeValueAsString(CommonResponse.error("没有accessToken")));
+			response.getWriter().print(mapper.writeValueAsString(JsonResult.errorAuthorized("没有accessToken")));
 			return;
 		}
 		log.info("openId:" + openId);

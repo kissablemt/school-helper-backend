@@ -1,16 +1,13 @@
 package cn.edu.dgut.school_helper.service.impl;
 
 import cn.edu.dgut.school_helper.config.WxMaProperties;
-import cn.edu.dgut.school_helper.controller.PostController;
 import cn.edu.dgut.school_helper.service.MiniAppService;
 import cn.edu.dgut.school_helper.util.Base64Utils;
-import cn.edu.dgut.school_helper.util.CommonResponse;
 import cn.edu.dgut.school_helper.util.OnlineUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +72,7 @@ public class MiniAppServiceImpl implements MiniAppService {
     public Boolean validateSensitiveWords(String content) {
         Map<String, String> params = new HashMap<String, String>();
         params.put(MiniAppServiceImpl.MINI_APP_ACCESS_TOKEN, getValidateSensitiveContentToken());
-        //验证敏感信息
+        // 验证敏感信息
         Map<String, String> contentMap = new HashMap<String, String>();
         contentMap.put("content", content);
         try {
@@ -94,7 +91,7 @@ public class MiniAppServiceImpl implements MiniAppService {
     public Boolean validateSensitiveImage(String[] imgBase64Strs) {
         Map<String, String> params = new HashMap<String, String>();
         params.put(MINI_APP_ACCESS_TOKEN, getValidateSensitiveContentToken());
-        //验证敏感信息
+        // 验证敏感信息
         for (String base64Str : imgBase64Strs) {
             byte[] bytes = Base64Utils.decode(base64Str);
             String responseStr = null;

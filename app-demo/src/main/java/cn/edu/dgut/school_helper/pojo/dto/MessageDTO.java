@@ -1,9 +1,9 @@
 package cn.edu.dgut.school_helper.pojo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MessageDTO implements Serializable {
 

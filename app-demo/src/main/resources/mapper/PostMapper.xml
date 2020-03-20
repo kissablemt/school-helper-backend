@@ -34,7 +34,7 @@
 	</select>
 
 	<select id="selectPostListPaging" resultMap="postMapping">
-		<bind name="keywordLike" value="'%' + keyword + '%'" />
+
 		SELECT
 		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
 		LEFT JOIN
@@ -42,17 +42,18 @@
 		on p.open_id = u.open_id
 		where
 			(p.post_type = #{postType}
-		<if test="postType == 1 or postType == 2">
+		<if test="(postType == 1 or postType == 2) and goodsType != null and goodsType != ''">
 			and p.goods_type = #{goodsType}
 		</if>
 		)
 		<if test="keyword != null and keyword != ''">
+			<bind name="keywordLike" value="'%' + keyword + '%'" />
 			 and p.headline like #{keywordLike}
 		</if>
 	</select>
 
 	<select id="selectSecondHandPostListPaging" resultMap="postMapping">
-		<bind name="keywordLike" value="'%' + keyword + '%'" />
+
 		SELECT
 		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
 		LEFT JOIN
@@ -60,6 +61,7 @@
 		on p.open_id = u.open_id
 		where (p.post_type = 1 or p.post_type = 2)
 		<if test="keyword != null and keyword != ''">
+			<bind name="keywordLike" value="'%' + keyword + '%'" />
 			and p.headline like #{keywordLike}
 		</if>
 	</select>

@@ -1,15 +1,15 @@
 package cn.edu.dgut.school_helper.service;
 
 import cn.edu.dgut.school_helper.pojo.School;
-import cn.edu.dgut.school_helper.util.CommonResponse;
+import cn.edu.dgut.school_helper.util.JsonResult;
 
 public interface SchoolService{
 	
-		public CommonResponse selectSchoolByOpenId(School school);
-		public CommonResponse addSchool(School school);
-		public CommonResponse updateSchool(School school);
-		public CommonResponse deleteSchoolById(School school);
-		public CommonResponse selectAllSchool();
+		public JsonResult selectSchoolByOpenId(School school);
+		public JsonResult addSchool(School school);
+		public JsonResult updateSchool(School school);
+		public JsonResult deleteSchoolById(School school);
+		public JsonResult selectAllSchool();
 }
 
 

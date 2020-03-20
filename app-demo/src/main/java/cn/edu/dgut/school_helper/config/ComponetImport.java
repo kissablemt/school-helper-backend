@@ -1,11 +1,10 @@
 package cn.edu.dgut.school_helper.config;
 
+import com.github.tobato.fastdfs.FdfsClientConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
-
-import com.github.tobato.fastdfs.FdfsClientConfig;
 
 @Configuration
 @Import(FdfsClientConfig.class) 

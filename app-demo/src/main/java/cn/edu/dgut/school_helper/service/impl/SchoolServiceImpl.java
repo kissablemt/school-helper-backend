@@ -1,11 +1,10 @@
 package cn.edu.dgut.school_helper.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.edu.dgut.school_helper.mapper.SchoolMapper;
 import cn.edu.dgut.school_helper.service.SchoolService;
-import cn.edu.dgut.school_helper.util.CommonResponse;
+import cn.edu.dgut.school_helper.util.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 @Service
@@ -15,7 +14,7 @@ public class SchoolServiceImpl implements SchoolService {
 	private SchoolMapper schoolMapper;
 	
 	@Override
-	public CommonResponse selectAllSchool() {
-		return CommonResponse.isOk(schoolMapper.selectAll());
+	public JsonResult selectAllSchool() {
+		return JsonResult.ok(schoolMapper.selectAll());
 	}
 }

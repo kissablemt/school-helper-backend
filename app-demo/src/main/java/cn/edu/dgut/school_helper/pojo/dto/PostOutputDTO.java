@@ -1,11 +1,11 @@
 package cn.edu.dgut.school_helper.pojo.dto;
 
+import cn.edu.dgut.school_helper.pojo.Image;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import cn.edu.dgut.school_helper.pojo.Image;
 
 public class PostOutputDTO implements Serializable {
 

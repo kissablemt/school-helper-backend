@@ -1,11 +1,10 @@
 package cn.edu.dgut.school_helper.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import cn.edu.dgut.school_helper.pojo.Post;
 import cn.edu.dgut.school_helper.pojo.dto.PostOutputDTO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 通用 Mapper 代码生成器

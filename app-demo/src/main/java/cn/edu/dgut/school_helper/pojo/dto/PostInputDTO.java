@@ -2,9 +2,6 @@ package cn.edu.dgut.school_helper.pojo.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
-
-import cn.edu.dgut.school_helper.pojo.Image;
 
 public class PostInputDTO {
 

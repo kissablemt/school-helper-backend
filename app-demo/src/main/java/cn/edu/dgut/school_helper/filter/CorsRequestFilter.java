@@ -1,14 +1,13 @@
 package cn.edu.dgut.school_helper.filter;
 
-import java.io.IOException;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
 
 /**
  * 使用@ServletComponentScan,扫描注解，无法自定义过滤顺序，只能根据类的开头a-z，顺序过滤

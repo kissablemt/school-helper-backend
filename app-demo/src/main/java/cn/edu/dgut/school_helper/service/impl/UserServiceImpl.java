@@ -1,17 +1,15 @@
 package cn.edu.dgut.school_helper.service.impl;
 
-import cn.edu.dgut.school_helper.config.response.ServiceRuntimeExecption;
-import cn.edu.dgut.school_helper.util.Base64Utils;
-import cn.edu.dgut.school_helper.util.CommonResponse;
-import cn.edu.dgut.school_helper.util.FastDFSClientWrapper;
-import org.omg.CORBA.COMM_FAILURE;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import cn.edu.dgut.school_helper.exception.ServiceRuntimeException;
 import cn.edu.dgut.school_helper.mapper.SchoolMapper;
 import cn.edu.dgut.school_helper.mapper.UserMapper;
 import cn.edu.dgut.school_helper.pojo.User;
 import cn.edu.dgut.school_helper.service.UserService;
+import cn.edu.dgut.school_helper.util.Base64Utils;
+import cn.edu.dgut.school_helper.util.FastDFSClientWrapper;
+import cn.edu.dgut.school_helper.util.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -20,42 +18,48 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private SchoolMapper schoolMapper;
+
     @Autowired
     private FastDFSClientWrapper fastDFSClient;
 
     @Override
-    public Boolean addUser(User user) {
+    public JsonResult addUser(User user) {
         //查看是否有该学校
         if (schoolMapper.selectByPrimaryKey(user.getSchoolId()) == null) {
-            return false;
+            return JsonResult.errorMsg("不存在该学校id");
         }
         //插入数据
         int row = userMapper.insertSelective(user);
         if (row != 1) {
-            return false;
+            return JsonResult.errorMsg("插入数据失败");
         }
-        return true;
+        return JsonResult.ok();
     }
 
     @Override
-    public User getUserInfo(User user) {
-        return userMapper.selectByPrimaryKey(user.getOpenId());
+    public JsonResult getUserInfo(User user) {
+        User user2 = userMapper.selectByPrimaryKey(user.getOpenId());
+        if(user2 == null){
+            return JsonResult.errorMsg("没有该用户");
+        }
+        return JsonResult.ok();
     }
 
     @Override
-    public Boolean checkUserExistByOpenId(User user) {
+    public JsonResult checkUserExistByOpenId(User user) {
         User user2 = userMapper.selectByPrimaryKey(user.getOpenId());
         if (user2 == null) {
-            return false;
+            return JsonResult.errorMsg("该用户不存在");
         }
-        return true;
+        return JsonResult.ok();
     }
 
     @Override
 	@Transactional
-    public CommonResponse updateHeadPortrait(String openId, String headPortrait) {
+    public JsonResult updateHeadPortrait(String openId, String headPortrait) {
 		// 获取未更新前的图片地址
 		User user = userMapper.selectByPrimaryKey(openId);
 		String path = null;
@@ -66,30 +70,30 @@ public class UserServiceImpl implements UserService {
 			// 更新数据库
             int row = userMapper.updateByPrimaryKeySelective(new User().setHeadPortraitUrl(path).setOpenId(openId));
 			if (row != 1) {
-				return CommonResponse.error("更新头像失败");
+				return JsonResult.errorMsg("更新头像失败");
 			}
 			// 删除图片
 			fastDFSClient.deleteFile(user.getHeadPortraitUrl());
-			return CommonResponse.isOk(path);
+			return JsonResult.ok(path);
 
         } catch (Exception e) {
         	if(path != null){
 				//删除已上传的图片
 				fastDFSClient.deleteFile(path);
 			}
-			throw new ServiceRuntimeExecption("上传头像失败");
+			throw new ServiceRuntimeException("上传头像失败");
         }
     }
 
     @Override
-    public CommonResponse updateUser(User user) {
+    public JsonResult updateUser(User user) {
         //不更新头像地址
         user.setHeadPortraitUrl(null);
         int row = userMapper.updateByPrimaryKeySelective(user);
         if (row != 1) {
-            return CommonResponse.error("更新用户信息失败");
+            return JsonResult.errorMsg("更新用户信息失败");
         }
-        return CommonResponse.isOk("更新用户信息成功");
+        return JsonResult.ok("更新用户信息成功");
     }
 
 }

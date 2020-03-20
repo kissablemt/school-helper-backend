@@ -1,10 +1,8 @@
 package cn.edu.dgut.school_helper.aop;
 
-import java.lang.reflect.Method;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
+import cn.edu.dgut.school_helper.pojo.UserLog;
+import cn.edu.dgut.school_helper.service.UserLogService;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.aspectj.lang.JoinPoint;
@@ -18,9 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import cn.edu.dgut.school_helper.constant.JwtRequestConstant;
-import cn.edu.dgut.school_helper.pojo.UserLog;
-import cn.edu.dgut.school_helper.service.UserLogService;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Date;
 
 @Component
 @Aspect

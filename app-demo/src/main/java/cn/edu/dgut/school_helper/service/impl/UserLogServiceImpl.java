@@ -1,12 +1,11 @@
 package cn.edu.dgut.school_helper.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.edu.dgut.school_helper.mapper.UserLogMapper;
 import cn.edu.dgut.school_helper.pojo.UserLog;
 import cn.edu.dgut.school_helper.service.UserLogService;
-import cn.edu.dgut.school_helper.util.CommonResponse;
+import cn.edu.dgut.school_helper.util.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 @Service
@@ -17,12 +16,12 @@ public class UserLogServiceImpl implements UserLogService {
 	
 
 	@Override
-	public CommonResponse addUserLog(UserLog userLog) {
+	public JsonResult addUserLog(UserLog userLog) {
 		int row = userLogMapper.insertSelective(userLog);
 		if(row == 1) {
-			return CommonResponse.isOk(row);
+			return JsonResult.ok(row);
 		}
-		return CommonResponse.error("插入失败");
+		return JsonResult.errorMsg("插入失败");
 	}
 
 }
