@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CollectionServiceImpl implements CollectionService {
 
@@ -38,6 +40,16 @@ public class CollectionServiceImpl implements CollectionService {
 		if (post == null || PostConstant.DELETED == post.getStatus()) {
 			return JsonResult.errorMsg("没有该帖子");
 		}
+		// 检查是否存在该收藏,status=CollectionConstant.UNDELETE,不计入
+		// 懒得写sql语句查询count了
+		List<Collection> collections = collectionMapper.select(collection);
+		long count = collections.parallelStream()
+				.filter(collection1->collection1.getStatus()==CollectionConstant.UNDELETE)
+				.count();
+		if(count >= 1){
+			return JsonResult.errorMsg("已有该收藏");
+		}
+		System.out.println(count);
 		collection.setStatus(CollectionConstant.UNDELETE);
 		int row = collectionMapper.insertSelective(collection);
 		if (row == 1) {

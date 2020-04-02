@@ -70,6 +70,11 @@ public class PostController {
         return postService.deletePostById(new Post().setPostId(postId).setOpenId(openId));
     }
 
+    @GetMapping("/selectOne/{postId}")
+    public JsonResult selectPostByPostId(@PathVariable(name="postId") Integer postId) {
+        return postService.selectPostByPostId(new Post().setPostId(postId));
+    }
+
     @GetMapping("/selectAll")
     public JsonResult selectAllPostByOpenId(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
         return postService.selectAllPostByOpenId(new Post().setOpenId(openId));

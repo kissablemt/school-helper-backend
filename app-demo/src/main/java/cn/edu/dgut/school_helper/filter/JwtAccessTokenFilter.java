@@ -31,6 +31,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 
 	{
 		excludePath.add("/api/reply/selectAll");
+		excludePath.add("/api/post/selectOne");
 		excludePath.add("/api/post/selectList");
 		excludePath.add("/api/post/selectSecondHandList");
 		excludePath.add("/api/school/selectAll");

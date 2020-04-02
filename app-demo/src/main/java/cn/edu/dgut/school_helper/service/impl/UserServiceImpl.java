@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         if (row != 1) {
             return JsonResult.errorMsg("插入数据失败");
         }
-        return JsonResult.ok();
+        return JsonResult.ok(row);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         if(user2 == null){
             return JsonResult.errorMsg("没有该用户");
         }
-        return JsonResult.ok();
+        return JsonResult.ok(user2);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         if (user2 == null) {
             return JsonResult.errorMsg("该用户不存在");
         }
-        return JsonResult.ok();
+        return JsonResult.ok(user2);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         if (row != 1) {
             return JsonResult.errorMsg("更新用户信息失败");
         }
-        return JsonResult.ok("更新用户信息成功");
+        return JsonResult.ok(row);
     }
 
 }

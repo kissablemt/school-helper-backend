@@ -73,7 +73,7 @@ public class UserController {
 
     @GetMapping("/getUserInfo")
     public JsonResult getUserInfo(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
-        return JsonResult.ok(userService.getUserInfo(new User().setOpenId(openId)));
+        return userService.getUserInfo(new User().setOpenId(openId));
 
     }
 

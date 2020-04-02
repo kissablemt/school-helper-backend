@@ -11,6 +11,7 @@ public interface PostService {
     public JsonResult addPost(Post post, String[] imageStrs);
     public JsonResult updatePost(Post post, String[] imageStrs);
     public JsonResult deletePostById(Post post);
+    public JsonResult selectPostByPostId(Post post);
     public JsonResult selectAllPostByOpenId(Post post);
     public JsonResult selectPostListPaging(PostQueryDTO postQueryDTO);
     public JsonResult selectSecondHandPostListPaging(PostQueryDTO postQueryDTO);

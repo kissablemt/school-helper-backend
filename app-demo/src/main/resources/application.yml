@@ -24,13 +24,6 @@ spring:
         max-idle: 10
         min-idle: 2
         timeout: 5000
-  security:
-    login-type: json
-    browser:
-      remember-time: 86400
-      login-page: /login.html
-      login-processing-url: /authentication/form
-      no-login-processing-url: /authentication/require
 mybatis:
   mapper-locations:
   - classpath*:mapper/**/*.xml

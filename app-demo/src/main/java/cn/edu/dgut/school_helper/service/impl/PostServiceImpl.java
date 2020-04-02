@@ -115,6 +115,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public JsonResult selectPostByPostId(Post post) {
+        return JsonResult.ok(postMapper.selectPostByPostId(post.getPostId()));
+    }
+
+    @Override
     public JsonResult selectAllPostByOpenId(Post post) {
         return JsonResult.ok(postMapper.selectAllPostByOpenId(post.getOpenId()));
     }

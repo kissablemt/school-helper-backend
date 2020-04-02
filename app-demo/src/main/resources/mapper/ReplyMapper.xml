@@ -48,5 +48,6 @@
 		on r.to_open_id = u2.open_id
 		WHERE r.post_id
 		= #{postId}
+		and r.status = 1
 	</sql>
 </mapper>

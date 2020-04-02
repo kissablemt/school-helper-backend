@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface PostMapper extends tk.mybatis.mapper.common.Mapper<Post> {
 
+    PostOutputDTO selectPostByPostId(Integer postId);
+
     List<PostOutputDTO> selectAllPostByOpenId(String openId);
 
     List<PostOutputDTO> selectPostListPaging(@Param("postType") Integer postType, @Param("goodsType") Integer goodsType, @Param("keyword") String keyword);

@@ -24,13 +24,20 @@
 		</collection>
 	</resultMap>
 
+	<select id="selectPostByPostId" resultMap="postMapping">
+		SELECT
+		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
+		LEFT JOIN user u
+		on p.open_id = u.open_id
+		WHERE p.post_id = #{postId} and p.status = 1;
+	</select>
 
 	<select id="selectAllPostByOpenId" resultMap="postMapping">
 		SELECT
 		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
 		LEFT JOIN user u
 		on p.open_id = u.open_id
-		WHERE p.open_id = #{openId};
+		WHERE p.open_id = #{openId} and p.status = 1;
 	</select>
 
 	<select id="selectPostListPaging" resultMap="postMapping">
@@ -50,6 +57,7 @@
 			<bind name="keywordLike" value="'%' + keyword + '%'" />
 			 and p.headline like #{keywordLike}
 		</if>
+		and p.status = 1
 	</select>
 
 	<select id="selectSecondHandPostListPaging" resultMap="postMapping">
@@ -64,6 +72,7 @@
 			<bind name="keywordLike" value="'%' + keyword + '%'" />
 			and p.headline like #{keywordLike}
 		</if>
+		and p.status = 1
 	</select>
 
 </mapper>
