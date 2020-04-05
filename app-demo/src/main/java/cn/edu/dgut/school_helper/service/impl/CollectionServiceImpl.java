@@ -49,7 +49,7 @@ public class CollectionServiceImpl implements CollectionService {
 		if(count >= 1){
 			return JsonResult.errorMsg("已有该收藏");
 		}
-		System.out.println(count);
+		//System.out.println(count);
 		collection.setStatus(CollectionConstant.UNDELETE);
 		int row = collectionMapper.insertSelective(collection);
 		if (row == 1) {

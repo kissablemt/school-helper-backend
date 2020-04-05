@@ -13,20 +13,27 @@ public class ReportController {
 	
 	@Autowired
 	private ReportService reportService;
-	
+
 	@PostMapping
+	public JsonResult addReportAutoDealPost(@RequestBody Report report,
+								@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
+		return reportService.addReportAutoDealPost(report.setReporterId(openId));
+	}
+
+
+	//@PostMapping
 	public JsonResult addReport(@RequestBody Report report,
 								@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		return reportService.addReport(report.setReporterId(openId));
 	}
 
-	@PutMapping
+	//@PutMapping
 	public JsonResult updateReport(@RequestBody Report report,
 			@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		return reportService.updateReport(report.setReporterId(openId));
 	}
 	
-	@GetMapping("/selectAll")
+	//@GetMapping("/selectAll")
 	public JsonResult selectAllReport(@RequestAttribute(JwtRequestConstant.OPEN_ID) String openId) {
 		return reportService.selectReportByOpenId(new Report().setReporterId(openId));
 	}

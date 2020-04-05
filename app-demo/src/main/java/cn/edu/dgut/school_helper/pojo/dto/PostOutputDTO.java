@@ -14,6 +14,7 @@ public class PostOutputDTO implements Serializable {
 	private String headPortraitUrl;
 	private String nickname;
 	private String contactWay;
+	private Integer faithValue;
 	private String headline;
 	private String content;
 	private BigDecimal money;
@@ -21,14 +22,14 @@ public class PostOutputDTO implements Serializable {
 	private Integer goodsType;
 	private Integer postType;
 	private List<Image> images;
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * 1-发布中，2-被封禁,3-被删除
 	 */
 	private Integer status;
-	
+
 	public Integer getPostId() {
 		return postId;
 	}
@@ -101,12 +102,14 @@ public class PostOutputDTO implements Serializable {
 	public void setContactWay(String contactWay) {
 		this.contactWay = contactWay;
 	}
+	public Integer getFaithValue() { return faithValue; }
+	public void setFaithValue(Integer faithValue) { this.faithValue = faithValue; }
 	public List<Image> getImages() {
 		return images;
 	}
 	public void setImages(List<Image> images) {
 		this.images = images;
 	}
-	
-	
+
+
 }

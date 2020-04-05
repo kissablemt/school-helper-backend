@@ -10,6 +10,7 @@
 		<result property="nickname" column="nickname" />
 		<result property="headPortraitUrl" column="head_portrait_url" />
 		<result property="contactWay" column="contact_way" />
+		<result property="faithValue" column="faith_value" />
 		<result property="headline" column="headline" />
 		<result property="content" column="content" />
 		<result property="money" column="money" />
@@ -26,7 +27,7 @@
 
 	<select id="selectPostByPostId" resultMap="postMapping">
 		SELECT
-		p.*,u.nickname,u.head_portrait_url,u.contact_way FROM post p
+		p.*,u.nickname,u.head_portrait_url,u.contact_way,u.faith_value FROM post p
 		LEFT JOIN user u
 		on p.open_id = u.open_id
 		WHERE p.post_id = #{postId} and p.status = 1;

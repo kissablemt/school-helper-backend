@@ -44,7 +44,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		// 排除refreshToken的路径
+		// 排除公用的路径
 		for (String path : excludePath) {
 			if (StringUtils.startsWith(request.getRequestURI(), path)) {
 				filterChain.doFilter(request, response);
@@ -57,9 +57,9 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 		accessToken = StringUtils.removeStart(accessToken, "Bearer ");
 		String openId = null;
 		// 获取openId
-		if (!StringUtils.isNotBlank(accessToken) || (openId = JwtUtils.verifyAccessToken(accessToken)) == null) {
+		if (StringUtils.isBlank(accessToken) || (openId = JwtUtils.verifyAccessToken(accessToken)) == null) {
 			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().print(mapper.writeValueAsString(JsonResult.errorAuthorized("没有accessToken")));
+			response.getWriter().print(mapper.writeValueAsString(JsonResult.errorAuthorized("没有accessToken或已过期")));
 			return;
 		}
 		log.info("openId:" + openId);

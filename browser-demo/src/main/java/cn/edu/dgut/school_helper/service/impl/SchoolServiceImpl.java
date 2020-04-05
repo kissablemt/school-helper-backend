@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import cn.edu.dgut.school_helper.mapper.SchoolMapper;
 import cn.edu.dgut.school_helper.pojo.School;
 import cn.edu.dgut.school_helper.service.SchoolService;
+import springfox.documentation.spring.web.json.Json;
 
 
 @Service
@@ -50,7 +51,6 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Override
 	public JsonResult selectAllSchool() {
-		// TODO Auto-generated method stub
-		return null;
+		return JsonResult.ok(schoolMapper.selectAll());
 	}
 }

@@ -67,7 +67,7 @@ public class JwtUtils {
 	public static String verifyAccessToken(String jwt) {
 		// 判断是否过期
 		JWTVerifier verify = JWT.require(algorithm)
-				.acceptExpiresAt(Calendar.getInstance().getTimeInMillis())
+				.acceptExpiresAt(5) // 允许5秒内弹性
 				.build();
 		DecodedJWT decodeJwt = null;
 		try {
