@@ -13,14 +13,18 @@
 		<result property="date" column="date"/>
 		<result property="status" column="status"/>
 		<result property="replyId" column="reply_id"/>
+		<result property="postId" column="post_id"/>
+		<result property="headline" column="headline"/>
 		<result property="fromOpenName" column="from_open_name"/>
 		<result property="toOpenName" column="to_open_name"/>
 	</resultMap>
 	<select id="selectAllMessageByOpenId" resultMap="allMessage">
-		SELECT m.*,u1.nickname 'from_open_name',u2.nickname
+SELECT m.*,p.post_id,p.headline,u1.nickname 'from_open_name',u2.nickname
 		'to_open_name' from message m
 		LEFT JOIN reply r
 		on m.reply_id = r.reply_id
+		LEFT JOIN post p
+		on r.post_id = p.post_id
 		LEFT JOIN user u1
 		on r.from_open_id = u1.open_id
 		LEFT JOIN user u2

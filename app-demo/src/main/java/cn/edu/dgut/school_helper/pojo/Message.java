@@ -34,6 +34,12 @@ public class Message implements Serializable {
     private Date date;
 
     /**
+     * 评论id
+     */
+    @Column(name = "`reply_id`")
+    private Integer replyId;
+
+    /**
      * 1-未读，2-已读
      */
     @Column(name = "`status`")
@@ -114,6 +120,15 @@ public class Message implements Serializable {
      */
     public Message setDate(Date date) {
         this.date = date;
+        return this;
+    }
+
+    public Integer getReplyId() {
+        return replyId;
+    }
+
+    public Message setReplyId(Integer replyId) {
+        this.replyId = replyId;
         return this;
     }
 

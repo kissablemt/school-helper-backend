@@ -65,21 +65,22 @@ public class ReplyServiceImpl implements ReplyService {
 			//根评论
 			reply.setParentId(-1);
 		}
-		// 发送消息，有人回复他了
-		Message message = new Message()
-				.setOpenId(reply.getToOpenId())
-				.setContent(reply.getContent())
-				.setDate(new Date())
-				.setStatus(MessageConstant.UNREAD);
-		if(messageMapper.insertSelective(message) != 1) {
-			return JsonResult.errorMsg("发送消息失败");
-		}
-		//插入评论
+		// 插入评论
 		reply.setDate(new Date());
 		reply.setStatus(ReplyConstant.UNDELETE);
 		int row = replyMapper.insertSelective(reply);
 		if (row != 1) {
-			throw new ServiceRuntimeException("插入回复失败");
+			return JsonResult.errorMsg("插入回复失败");
+		}
+		// 发送消息，有人回复他了
+		Message message = new Message()
+				.setOpenId(reply.getToOpenId())
+				.setContent(reply.getContent())
+				.setReplyId(reply.getReplyId())
+				.setDate(new Date())
+				.setStatus(MessageConstant.UNREAD);
+		if(messageMapper.insertSelective(message) != 1) {
+			throw new ServiceRuntimeException("发送消息失败");
 		}
 		return JsonResult.ok(row);
 	}

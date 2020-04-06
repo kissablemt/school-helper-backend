@@ -14,6 +14,8 @@ public class MessageDTO implements Serializable {
 	private Date date;
 	private Integer status;
 	private Integer replyId;
+	private Integer postId;
+	private String headline;
 	private String fromOpenName;
 	private String toOpenName;
 
@@ -66,6 +68,14 @@ public class MessageDTO implements Serializable {
 	public void setReplyId(Integer replyId) {
 		this.replyId = replyId;
 	}
+
+	public Integer getPostId() { return postId; }
+
+	public void setPostId(Integer postId) { this.postId = postId; }
+
+	public String getHeadline() { return headline; }
+
+	public void setHeadline(String headline) { this.headline = headline; }
 
 	public String getFromOpenName() {
 		return fromOpenName;

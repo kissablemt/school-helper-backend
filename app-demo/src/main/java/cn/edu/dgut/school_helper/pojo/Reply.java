@@ -1,6 +1,7 @@
 package cn.edu.dgut.school_helper.pojo;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class Reply implements Serializable {
      */
     @Id
     @Column(name = "`reply_id`")
+    @GeneratedValue(generator = "JDBC")
     private Integer replyId;
 
     /**
