@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
 
 @Configuration
-@Import(FdfsClientConfig.class) 
+@Import(FdfsClientConfig.class)
 // 解决jmx重复注册bean的问题
 @EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class ComponetImport {

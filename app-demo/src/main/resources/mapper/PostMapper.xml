@@ -59,6 +59,7 @@
 			 and p.headline like #{keywordLike}
 		</if>
 		and p.status = 1
+		order by p.post_id DESC
 	</select>
 
 	<select id="selectSecondHandPostListPaging" resultMap="postMapping">
@@ -74,6 +75,7 @@
 			and p.headline like #{keywordLike}
 		</if>
 		and p.status = 1
+		order by p.post_id DESC
 	</select>
 
 </mapper>

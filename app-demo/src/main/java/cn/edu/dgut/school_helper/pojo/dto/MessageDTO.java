@@ -17,7 +17,10 @@ public class MessageDTO implements Serializable {
 	private Integer postId;
 	private String headline;
 	private String fromOpenName;
+	private String fromHeadPortraitUrl;
 	private String toOpenName;
+	private String toHeadPortraitUrl;
+	private Integer replyParentId;
 
 	private static final long serialVersionUID = 1L;
 
@@ -93,4 +96,15 @@ public class MessageDTO implements Serializable {
 		this.toOpenName = toOpenName;
 	}
 
+	public String getFromHeadPortraitUrl() { return fromHeadPortraitUrl; }
+
+	public void setFromHeadPortraitUrl(String fromHeadPortraitUrl) { this.fromHeadPortraitUrl = fromHeadPortraitUrl; }
+
+	public String getToHeadPortraitUrl() { return toHeadPortraitUrl; }
+
+	public void setToHeadPortraitUrl(String toHeadPortraitUrl) { this.toHeadPortraitUrl = toHeadPortraitUrl; }
+
+	public Integer getReplyParentId() { return replyParentId; }
+
+	public void setReplyParentId(Integer replyParentId) { this.replyParentId = replyParentId; }
 }

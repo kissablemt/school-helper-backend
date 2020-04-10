@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,11 +35,22 @@ public class MiniAppServiceImpl implements MiniAppService {
 
     private static final String MINI_APP_ACCESS_TOKEN = "access_token";
 
+    private static final String MINI_APP_ACCESS_TOKEN_EXPIRES_IN = "expires_in";
+
     private static final String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
 
-    private static final String VALIDATE_SENSITIVE_CONTENT = "https://api.weixin.qq.com/wxa/msg_sec_check";
+    private static final String VALIDATE_SENSITIVE_CONTENT_URL = "https://api.weixin.qq.com/wxa/msg_sec_check";
 
-    private static final String VALIDATE_SENSITIVE_IMAGE = "https://api.weixin.qq.com/wxa/img_sec_check";
+    private static final String VALIDATE_SENSITIVE_IMAGE_URL = "https://api.weixin.qq.com/wxa/img_sec_check";
+
+    /**
+     * 每个小时的0分0秒执行
+     */
+    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Override
+    public void getAccessTokenSchedule() {
+        getAccessTokenFromWxAndCached();
+    }
 
     @Override
     public String getValidateSensitiveContentToken() {
@@ -46,6 +58,49 @@ public class MiniAppServiceImpl implements MiniAppService {
         if (redisTemplate.hasKey(MINI_APP_ACCESS_TOKEN)) {
             return redisTemplate.opsForValue().get(MINI_APP_ACCESS_TOKEN);
         }
+        return getAccessTokenFromWxAndCached();
+    }
+
+    @Override
+    public Boolean validateSensitiveWords(String content) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(MiniAppServiceImpl.MINI_APP_ACCESS_TOKEN, getValidateSensitiveContentToken());
+        // 验证敏感信息
+        Map<String, String> contentMap = new HashMap<String, String>();
+        contentMap.put("content", content);
+        try {
+            content = objectMapper.writeValueAsString(contentMap);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        String responseStr = OnlineUtils.sendPostContent(VALIDATE_SENSITIVE_CONTENT_URL, params, content);
+        if (StringUtils.contains(responseStr, "87014")) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean validateSensitiveImage(String[] imgBase64Strs) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(MINI_APP_ACCESS_TOKEN, getValidateSensitiveContentToken());
+        // 验证敏感信息
+        for (String base64Str : imgBase64Strs) {
+            byte[] bytes = Base64Utils.decode(base64Str);
+            String responseStr = null;
+            responseStr = OnlineUtils.sendPostImage(VALIDATE_SENSITIVE_IMAGE_URL    , params, bytes);
+            System.out.println(responseStr);
+            if (StringUtils.contains(responseStr, "87014")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     *返回 accessToken
+     */
+    private String getAccessTokenFromWxAndCached() {
         // 所需参数
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", miniappProperties.getConfigs().get(0).getAppid());
@@ -63,44 +118,9 @@ public class MiniAppServiceImpl implements MiniAppService {
         }
         // 放入缓存后返回
         String accessToken = (String) response.get(MINI_APP_ACCESS_TOKEN);
-        long expiresIn = ((Integer) response.get("expires_in")).longValue();
+        long expiresIn = ((Integer) response.get(MINI_APP_ACCESS_TOKEN_EXPIRES_IN)).longValue();
         redisTemplate.opsForValue().set(MINI_APP_ACCESS_TOKEN, accessToken, expiresIn, TimeUnit.SECONDS);
-        return accessToken;
+        return  accessToken;
     }
 
-    @Override
-    public Boolean validateSensitiveWords(String content) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(MiniAppServiceImpl.MINI_APP_ACCESS_TOKEN, getValidateSensitiveContentToken());
-        // 验证敏感信息
-        Map<String, String> contentMap = new HashMap<String, String>();
-        contentMap.put("content", content);
-        try {
-            content = objectMapper.writeValueAsString(contentMap);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        String responseStr = OnlineUtils.sendPostContent(VALIDATE_SENSITIVE_CONTENT, params, content);
-        if (StringUtils.contains(responseStr, "87014")) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public Boolean validateSensitiveImage(String[] imgBase64Strs) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(MINI_APP_ACCESS_TOKEN, getValidateSensitiveContentToken());
-        // 验证敏感信息
-        for (String base64Str : imgBase64Strs) {
-            byte[] bytes = Base64Utils.decode(base64Str);
-            String responseStr = null;
-            responseStr = OnlineUtils.sendPostImage(VALIDATE_SENSITIVE_IMAGE, params, bytes);
-            System.out.println(responseStr);
-            if (StringUtils.contains(responseStr, "87014")) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

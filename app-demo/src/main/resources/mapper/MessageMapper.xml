@@ -17,18 +17,28 @@
 		<result property="headline" column="headline"/>
 		<result property="fromOpenName" column="from_open_name"/>
 		<result property="toOpenName" column="to_open_name"/>
+		<result property="fromHeadPortraitUrl" column="from_head_portrait_url"/>
+		<result property="toHeadPortraitUrl" column="to_head_portrait_url"/>
+		<result property="replyParentId" column="reply_parent_id"/>
 	</resultMap>
 	<select id="selectAllMessageByOpenId" resultMap="allMessage">
-SELECT m.*,p.post_id,p.headline,u1.nickname 'from_open_name',u2.nickname
-		'to_open_name' from message m
-		LEFT JOIN reply r
-		on m.reply_id = r.reply_id
-		LEFT JOIN post p
-		on r.post_id = p.post_id
-		LEFT JOIN user u1
-		on r.from_open_id = u1.open_id
-		LEFT JOIN user u2
-		on r.to_open_id = u2.open_id
-		WHERE m.open_id = #{openId} and m.status != 3;
+		SELECT
+			m.*,
+			p.post_id,
+			p.headline,
+			u1.nickname 'from_open_name',
+			u1.head_portrait_url 'from_head_portrait_url',
+			u2.nickname 'to_open_name',
+			u2.head_portrait_url 'to_head_portrait_url',
+			r.parent_id 'reply_parent_id'
+		FROM
+			message m
+			LEFT JOIN reply r ON m.reply_id = r.reply_id
+			LEFT JOIN post p ON r.post_id = p.post_id
+			LEFT JOIN USER u1 ON r.from_open_id = u1.open_id
+			LEFT JOIN USER u2 ON r.to_open_id = u2.open_id
+		WHERE
+			m.open_id = #{openId}
+			AND m.STATUS != 3;
 	</select>
 </mapper>

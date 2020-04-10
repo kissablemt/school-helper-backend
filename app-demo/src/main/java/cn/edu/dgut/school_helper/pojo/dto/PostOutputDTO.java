@@ -1,6 +1,7 @@
 package cn.edu.dgut.school_helper.pojo.dto;
 
 import cn.edu.dgut.school_helper.pojo.Image;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ public class PostOutputDTO implements Serializable {
 	private String headline;
 	private String content;
 	private BigDecimal money;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date date;
 	private Integer goodsType;
 	private Integer postType;
