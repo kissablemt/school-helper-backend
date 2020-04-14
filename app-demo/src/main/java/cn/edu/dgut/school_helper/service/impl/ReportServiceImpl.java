@@ -88,7 +88,7 @@ public class ReportServiceImpl implements ReportService {
             // 发送信息通知发帖人
             Message message = new Message()
 					.setOpenId(user.getOpenId())
-					.setContent("帖子由于多人举报被封禁")
+					.setContent("你的帖子：“" + post.getHeadline() + "”，由于多人举报被封禁")
                     .setDate(new Date())
                     .setStatus(MessageConstant.UNREAD);
             messageMapper.insertSelective(message);

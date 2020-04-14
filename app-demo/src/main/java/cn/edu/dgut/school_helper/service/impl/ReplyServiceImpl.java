@@ -19,9 +19,10 @@ import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
@@ -86,6 +87,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
+	@Transactional
 	public JsonResult deleteReplyById(Reply reply) {
 		// 非评论发起者，不允许删除
 		Reply reply2 = replyMapper.selectByPrimaryKey(reply.getReplyId());
@@ -95,8 +97,12 @@ public class ReplyServiceImpl implements ReplyService {
 		if (!StringUtils.equals(reply2.getFromOpenId(), reply.getFromOpenId())) {
 			return JsonResult.errorMsg("不能删除非自己发起的评论");
 		}
-		// 不允许删除有子评论的
+		// 可删除评论,同时删除子评论
 		int row = replyMapper.updateByPrimaryKeySelective(reply.setStatus(ReplyConstant.DELETED));
+		List<Reply> childReplies =  replyMapper.select(new Reply().setParentId(reply.getReplyId()));
+		for (Reply child: childReplies) {
+			replyMapper.updateByPrimaryKeySelective(child.setStatus(ReplyConstant.DELETED));
+		}
 		if (row == 1) {
 			return JsonResult.ok(row);
 		}

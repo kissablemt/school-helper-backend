@@ -15,17 +15,20 @@
 		<result property="replyId" column="reply_id"/>
 		<result property="postId" column="post_id"/>
 		<result property="headline" column="headline"/>
+		<result property="fromOpenId" column="from_open_id"/>
 		<result property="fromOpenName" column="from_open_name"/>
 		<result property="toOpenName" column="to_open_name"/>
 		<result property="fromHeadPortraitUrl" column="from_head_portrait_url"/>
 		<result property="toHeadPortraitUrl" column="to_head_portrait_url"/>
 		<result property="replyParentId" column="reply_parent_id"/>
 	</resultMap>
+
 	<select id="selectAllMessageByOpenId" resultMap="allMessage">
 		SELECT
 			m.*,
 			p.post_id,
 			p.headline,
+			u1.open_id 'from_open_id',
 			u1.nickname 'from_open_name',
 			u1.head_portrait_url 'from_head_portrait_url',
 			u2.nickname 'to_open_name',
@@ -39,6 +42,6 @@
 			LEFT JOIN USER u2 ON r.to_open_id = u2.open_id
 		WHERE
 			m.open_id = #{openId}
-			AND m.STATUS != 3;
+			AND m.STATUS != 3 AND (r.status != 2 or ISNULL(m.reply_id));
 	</select>
 </mapper>

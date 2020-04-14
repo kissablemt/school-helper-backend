@@ -16,6 +16,7 @@ public class MessageDTO implements Serializable {
 	private Integer replyId;
 	private Integer postId;
 	private String headline;
+	private String fromOpenId;
 	private String fromOpenName;
 	private String fromHeadPortraitUrl;
 	private String toOpenName;
@@ -107,4 +108,8 @@ public class MessageDTO implements Serializable {
 	public Integer getReplyParentId() { return replyParentId; }
 
 	public void setReplyParentId(Integer replyParentId) { this.replyParentId = replyParentId; }
+
+	public String getFromOpenId() { return fromOpenId; }
+
+	public void setFromOpenId(String fromOpenId) { this.fromOpenId = fromOpenId; }
 }
